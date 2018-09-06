@@ -1,0 +1,198 @@
+<mat-toolbar id="buyerHead">
+    <span class="pull-left">
+      <img style="width:7vw;height:100%" src="/assets/icons/index.png">
+    </span>
+    <span>Welcome Banker</span>
+    <span routerLink="/escrow">Home</span>
+    <span routerLink="/escrow" style="margin-left: 2px" style="color: rgb(23, 199, 38)">My Account</span>
+    <span class="example-fill-remaining-space"></span>
+    <mat-slide-toggle [checked]="dark" (change)="dark=!dark;toggleTheme();" color="accent">Dark theme</mat-slide-toggle>
+    <span class="example-fill-remaining-space"></span>
+    <span>About</span>
+    <span routerLink="/login" style="margin-left: 2px" style="color: rgb(199, 64, 23) !important">Logout</span>
+    <span style="right: 0">
+      <img style="width:7vw;height: 100%;" src="/assets/icons/logo_colored.png">
+    </span>
+  </mat-toolbar>
+
+  <mat-tab-group mat-stretch-tabs [selectedIndex]=selectedTab #tabGroup (selectedTabChange)="tabChanged($event)">
+      <mat-tab label="Properties Under Transaction">
+        <h2 style="text-align: center"><b>Current Transactions</b></h2>
+        
+        <button class="mat-elevation-z15" mat-raised-button color="accent" (click)=getAllTps() class="pull-right" style="margin-top: -2%;margin-right: 2%;">Refresh</button>
+        <p class="text-center">Select a row and click on Proceed to continue</p>
+        
+          <table mat-table [dataSource]="tsp" class="mat-elevation-z8">
+              <!-- Title Column -->
+              <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef> Title </th>
+                <td mat-cell *matCellDef="let element"> {{element.property.title}} </td>
+              </ng-container>
+        
+              <!-- Escrow Name Column -->
+              <ng-container matColumnDef="escrow">
+                <th mat-header-cell *matHeaderCellDef> Escrow Name </th>
+                <td mat-cell *matCellDef="let element"> Escrow </td>
+              </ng-container>
+        
+              <!-- Seller Name Column -->
+              <ng-container matColumnDef="seller">
+                <th mat-header-cell *matHeaderCellDef> Seller Name </th>
+                <td mat-cell *matCellDef="let element"> Seller </td>
+              </ng-container>
+        
+              <!-- Bank Name Column -->
+              <ng-container matColumnDef="bank">
+                <th mat-header-cell *matHeaderCellDef> Buyer Name </th>
+                <td mat-cell *matCellDef="let element"> Buyer </td>
+              </ng-container>
+        
+              <!-- Title Amount Column -->
+              <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef> Title Amount </th>
+                <td mat-cell *matCellDef="let element"> {{element.property.price |currency:'GBP':'symbol':'1.0-2'}} </td>
+              </ng-container>
+        
+              <!-- Transaction Status Column -->
+              <ng-container matColumnDef="tStatus">
+                <th mat-header-cell *matHeaderCellDef> Transaction Status </th>
+                <td mat-cell *matCellDef="let element"> {{getTransStatus(element.tp)}} </td>
+              </ng-container>
+        
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns; let i=index" [ngClass]="{'highlight': selectedTpRow == i}" (click)="onTpRowSelect(i)"></tr>
+            </table>
+          <div class='text-center'>
+            <button [disabled]='proceedDisable' class="mat-elevation-z15 btn" mat-raised-button color="primary" type="button" (click)="onProceed()">Proceed</button>
+          </div>
+      </mat-tab>
+
+      <mat-tab label="Approval Requests/Notifications" [disabled]="isDisabled">
+        <h2 style="text-align: center"><b>Notifications</b></h2>
+        <button class="mat-elevation-z15 refresh" mat-raised-button color="accent" type="button" (click)="this.helper.checkStatus()">Refresh</button>
+        <!-- <button (click)='this.helper.checkStatus()' class="btn btn-danger btn-lg" style="margin-left: 90%;margin-top: -5%">Refresh</button> -->
+        <ul class="list-group" style="font-size: 19px">
+          <li *ngIf='check4not()' class="list-group-item">Title Received from Escrow, Notify Buyer!!
+            <!-- <button *ngIf='!check4Approval()' (click)='approve4()' class="btn btn-primary pull-right">Approve</button> -->
+            <button *ngIf='!check4Approval()' style="margin: auto" class="mat-elevation-z15 send pull-right" mat-raised-button color="primary" type="button" (click)="approve4()">Approve</button>
+            <span *ngIf='check4Approval()'  class="pull-right succ">Approved
+              <span class="glyphicon glyphicon-ok"></span>
+            </span>
+            <span class="pull-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <!-- <button  class="btn btn-success pull-right" (click)="view('title')">View Title</button> -->
+            <button class="send pull-right" style="margin: auto;padding: 0 2.5%;" mat-raised-button color="accent" type="button" (click)="view('title')">View Title</button>
+
+          </li>
+          <li *ngIf='check3not()' class="list-group-item">Transfer Remaining Fund to Escrow
+            <!-- <button *ngIf='!check3Approval()' (click)="approve3('Lender','Escrow')" class="btn btn-primary pull-right">Approve</button> -->
+            <button *ngIf='!check3Approval()' style="margin: auto" class="mat-elevation-z15 send pull-right" mat-raised-button color="primary" type="button" (click)="approve3('Lender','Escrow')">Approve</button>
+            <span *ngIf='check3Approval()'  class="pull-right succ">Approved
+              <span class="glyphicon glyphicon-ok"></span>
+            </span>
+          </li>
+          <li *ngIf='check2not()'  class="list-group-item">Escrow Recieved 10% amount and Title, Transfer Mortgage to buyer
+            <!-- <button *ngIf='!check2Approval()' (click)='approve2()' class="btn btn-primary pull-right">Approve</button> -->
+            <button [disabled]="mUp" *ngIf='!check2Approval()' style="margin: auto; margin-top: -3px;" class="mat-elevation-z15 send pull-right" mat-raised-button color="primary" type="button" (click)="approve2()">Approve</button>
+            <span *ngIf='check2Approval()'  class="pull-right succ">Approved
+              <span class="glyphicon glyphicon-ok"></span>
+            </span>
+            <input type="file" *ngIf=!check2Approval() style="font-size: 14px" class="pull-right" id="file" (change)="mortgageUp($event.target.files)">
+          
+          </li>
+          <li *ngIf='check1not()' class="list-group-item">Loan application received.
+            <!-- <button *ngIf='!check1Approval()' (click)='approve1()' class="btn btn-primary pull-right">Approve</button> -->
+            <button *ngIf='!check1Approval()' class="mat-elevation-z15 send pull-right" mat-raised-button color="primary" type="button" (click)="approve1()">Approve</button>
+            <span *ngIf='check1Approval()' style="margin: auto" class="pull-right succ">Approved
+              <span class="glyphicon glyphicon-ok"></span>
+            </span>
+            <span class="pull-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <!-- <button class="btn btn-success pull-right" (click)="view('titleRecord')">View Application</button> -->
+            <button style="margin: auto" class="mat-elevation-z15 send pull-right" mat-raised-button color="accent" type="button" (click)="view('titleRecord')">View Application</button>
+          </li>
+  
+        </ul>
+      </mat-tab>
+
+      <mat-tab label="Transaction Details">
+        <app-trans-table *ngIf="this.helper.token!=''" [helper]='helper'></app-trans-table>
+      </mat-tab>
+  </mat-tab-group>
+
+
+<ng-template #no_data_templ>
+  <div class="container">
+    <button (click)='getAllTids()' class="btn btn-danger btn-lg" style="margin-left: 90%;margin-bottom: -5%">Refresh</button>
+      <h2>No data found...</h2>
+  </div>
+  
+    
+</ng-template>
+ 
+<!-- Progress Bar Down Below -->
+<div class="progBar" *ngIf="prog">
+    <div class="container" style="width: 100%;">		
+          
+      <div class="row multistep">
+          <div class="col-xs-3 multistep-step disabled" [class.complete]='this.helper.SN()'>
+              <div class="text-center multistep-stepname">Seller Notified</div>
+              <div class="progress"><div class="progress-bar"></div></div>
+              <span class="multistep-dot"></span>
+          </div>
+           <div class="col-xs-3 multistep-step disabled" [class.complete]='this.helper.SApp()'>
+               <div class="text-center multistep-stepname">Seller Approved</div>
+               <div class="progress"><div class="progress-bar"></div></div>
+               <span class="multistep-dot"></span>
+           </div>
+   
+           <div class="col-xs-3 multistep-step disabled" [class.complete]='this.helper.LApl()'>
+               <div class="text-center multistep-stepname">Loan Application</div>
+               <div class="progress"><div class="progress-bar"></div></div>
+               <span class="multistep-dot"></span>
+           </div>
+   
+           <div class="col-xs-3 multistep-step disabled" [class.complete]='this.helper.LApr()'>
+               <div class="text-center multistep-stepname">Loan Approval</div>
+               <div class="progress"><div class="progress-bar"></div></div>
+               <span class="multistep-dot"></span>
+           </div>
+   
+           <div class="col-xs-3 multistep-step disabled" [class.complete]='this.helper.PtoE()'>
+               <div class="text-center multistep-stepname">Payment to Escrow</div>
+               <div class="progress"><div class="progress-bar"></div></div>
+               <span class="multistep-dot"></span>
+           </div>
+           <div class="col-xs-3 multistep-step disabled" [class.complete]='this.helper.ERecT()'>
+              <div class="text-center multistep-stepname">Escrow Received Title</div>
+              <div class="progress"><div class="progress-bar"></div></div>
+              <span class="multistep-dot"></span>
+          </div>
+          <div class="col-xs-3 multistep-step disabled" [class.complete]='this.helper.MR()'>
+              <div class="text-center multistep-stepname">Mortgage Received</div>
+              <div class="progress"><div class="progress-bar"></div></div>
+              <span class="multistep-dot"></span>
+          </div>
+          <div class="col-xs-3 multistep-step disabled" [class.complete]='this.helper.LAmtR()'>
+              <div class="text-center multistep-stepname">Loan Amount Received</div>
+              <div class="progress"><div class="progress-bar"></div></div>
+              <span class="multistep-dot"></span>
+          </div>
+          <div class="col-xs-3 multistep-step disabled" [class.complete]='this.helper.SP()'> 
+              <div class="text-center multistep-stepname">Seller Paid</div>
+              <div class="progress"><div class="progress-bar"></div></div>
+              <span class="multistep-dot"></span>
+          </div>
+          <div class="col-xs-3 multistep-step disabled" [class.complete]='this.helper.BrecT()'>
+              <div class="text-center multistep-stepname">Bank Received Title</div>
+              <div class="progress"><div class="progress-bar"></div></div>
+              <span class="multistep-dot"></span>
+          </div>
+       </div>
+       
+   </div>
+  </div>
+
+<div class="staticLogo"></div>
+<div class="logoName">Bank</div>
+      
+      
+      

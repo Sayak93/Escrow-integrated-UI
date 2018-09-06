@@ -1,0 +1,132 @@
+.table tr.active td {
+  background-color:#123456 !important;
+  color: white;
+}
+
+.propertyTable{
+  font-size: 3vh;
+  text-align: center;
+}
+td{
+  text-align: center;
+}
+#buyButton{
+  opacity: 1.0;
+}
+table:hover{
+  cursor: pointer
+}
+a{
+cursor: pointer;
+}
+a:hover{
+color: rgb(12, 63, 141);
+font-weight: bold;
+}
+.progBar{
+position: absolute;
+bottom: 10vh;
+left: 0vw;
+width: 80%;
+height: 15vh;
+}
+
+
+.container a{
+  color: #e0e0e0;
+  font-weight: bold;
+  text-shadow: 2px, 2px, 2px, 2px black;
+}
+
+.container a:hover{
+  cursor: pointer;
+  color: #e0e0e0;
+  font-weight: bold;
+  text-shadow: 2px, 2px, 2px, 2px black;
+
+}
+
+.staticLogo{
+  background: url('/assets/icons/Buyerlogo2.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  position: fixed;
+  bottom: 0;
+  right: 1vw;
+  height: 15vh;
+  width: 7vw;
+}
+table{
+  width: 100%
+}
+.button-row{
+  margin-top: 2vh;
+}
+.matbtn{
+  margin-left: -0.5vw;
+  margin-right:0.5vw; 
+}
+.mat-header-cell{
+  text-align: center;
+  font-size: 1vw;
+  font-weight: bold;
+}
+.mat-cell{
+  font-size: 0.8vw;
+}
+.mat-row:hover{
+  background-color: rgb(143, 219, 194);
+}
+.highlight{
+  background-color: rgb(8, 156, 107);
+}
+#materialMenu{
+  display: none;
+}
+@media screen and (max-width:400px){
+  .staticLogo{
+    display: none;
+  }
+  #buyerHead{
+    display: none;
+  }
+  #materialMenu{
+    display: inline;
+  }
+  #materialMenu span:hover{
+    cursor: pointer;
+    font-size: auto;
+  }
+  a:hover{
+    cursor: pointer;
+    font-size: 15px;
+  }
+
+}
+
+.mat-toolbar span{
+  margin-left: 1vw;
+  cursor: pointer;
+}
+
+.example-fill-remaining-space {
+  /* This fills the remaining space, by using flexbox. 
+     Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}
+
+.modal-backdrop{
+  z-index: 1;
+}
+.btn{
+  margin-top: 2vh;
+}
+
+*{
+	font-family: "OverpassMono-bold" !important;
+	font-style: "semi-bold" !important;
+  }
+  h2, p, table{
+    font-family: "OverpassMono-bold" !important;
+    font-style: "semi-bold" !important;
+    }

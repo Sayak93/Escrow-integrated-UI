@@ -1,0 +1,156 @@
+.button-row button,
+.button-row a {
+  margin-right: 8px;
+}
+.loginContainer{
+	background: url("/assets/image/landing-bg.JPG");
+	width: 100vw;
+	height: 100vh;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-position: top center;
+	overflow: hidden;
+}
+
+.navbar{
+	position: relative;
+	width: 100vw;
+	height: 10vh;
+}
+
+.itcLogo{
+	position: relative;
+	background: url("/assets/icons/itc_logo_final.png");
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-position: top;
+	width: 15%;
+	height: 100%;
+	float: right;
+	margin-right: 20vw;
+}
+.hlfLogo{
+	position: relative;
+	background: url("/assets/icons/Hyperledger_Fabric_Logo_White.png");
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	width: 15%;
+	height: 70%;
+	float: left;
+	margin-left: 20vw;
+	margin-top: 1vh;
+}
+
+.regContainer{
+	background-size: 110% 110%;
+	background-repeat: no-repeat;
+	background-position: top center;
+	position: relative;
+	left: 67vw;
+	top: 10vh;
+	width: 25vw;
+	height: 60vh;
+	border-radius: 3%;
+	opacity: 0.9;
+	text-align: center;
+}
+
+.lbl{
+	color: black;
+	font-size: 2vh;
+	font-weight: bold;
+	padding-left: 4vw;
+
+}
+
+.reglbl{
+	color: white;
+	font-size: 2vh;
+	font-weight: bold;
+	padding-left: 4vw;
+}
+
+.loginInput{
+	margin: 1vh;
+	margin-left: 2vw;
+	width: 80%;
+}
+
+.btn{
+	width: 6vw;
+	margin-top: 2vh;
+	margin-left: 4vw;
+	color: white;
+	font-weight: bold;
+	font-size: 2vh;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	background: linear-gradient(to right, rgb(8, 43, 65) , rgb(67,109,26));
+	border: 1px solid white;
+}
+
+
+.modal-content {
+	background-image: url("/assets/image/modal_bg.gif");
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	border: 1px solid white;
+	border-radius: 2%;
+ }
+
+ .modal{
+	padding-top: 15vh;
+	background-color: black;
+	opacity: 0.85
+ }
+ .mat-form-field{
+	width:20vw;
+	font-size:1.2vw !important
+ }
+
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+	color: rgb(8, 43, 65);
+	text-align: center;
+  }
+  ::-moz-placeholder { /* Firefox 19+ */
+	color: rgb(8, 43, 65);;
+	text-align: center;
+  }
+  :-ms-input-placeholder { /* IE 10+ */
+	color: rgb(8, 43, 65);;
+	text-align: center;
+  }
+  :-moz-placeholder { /* Firefox 18- */
+	color: rgb(8, 43, 65);;
+	text-align: center;
+  }
+
+  @media screen and (max-width:400px){
+	  .itcLogo{
+		  width: 40%;
+		  float:right;
+		  margin-right: 5vw;
+		  height: 13vh;
+	  }
+	  .hlfLogo{
+		  height: 10vh;
+		  width: 40%;
+		  float: left;
+		  margin-left: 5vw;
+	  }
+	.regContainer{
+		width: 80%;
+		left: 10%;
+		top: 1vh;
+		height: 70%;
+	}
+	.mat-form-field{
+		width: 40vw;
+		font-size: 20px !important
+	}
+  }
+
+  *{
+	font-family: "OverpassMono-bold" !important;
+	font-style: "semi-bold" !important;
+  }

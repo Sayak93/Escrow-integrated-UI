@@ -1,0 +1,112 @@
+<div class="container">
+    <!-- The Modal -->
+<div class="modal fade" id="myModal" data-backdrop="false">
+       <div class="modal-dialog modal-dialog-centered">
+         <div class="modal-content">
+         
+           <!-- Modal Header -->
+           <div class="modal-header">
+             <h1 class="modal-title" style="text-align: center;color: white">Register Here</h1>
+             <button type="button" class="close" data-dismiss="modal" style="color: red;">Close &times;</button>
+           </div>
+           
+           <!-- Modal body -->
+           <div class="modal-body">
+             <form class="frm">
+             <tr>
+                <td class="reglbl">Name</td>
+                <td>
+                    <input name="name" class="loginInput" type="text" placeholder="Enter Your Name" required>
+                </td>
+            </tr>
+            <tr>
+                <td class="reglbl">Mobile</td>
+                <td>
+                    <input name="mob" class="loginInput" type="number" placeholder="Enter Your mobile number" maxlength="10" minlength="10">
+                </td>
+            </tr>
+            <tr>
+                <td class="reglbl">Email</td>
+                <td>
+                    <input name="email" class="loginInput" type="email" placeholder="Enter Your EmailId" required>
+                </td>
+            </tr>
+            <tr>
+                <td class="reglbl">Password</td>
+                <td>
+                    <input name="pass" class="loginInput" type="password" placeholder="Type your password" required>
+                </td>
+            </tr>
+            <tr>
+                <td class="reglbl">Confirm Password</td>
+                <td>
+                    <input type="password" class="loginInput" placeholder="Re-Type your password">
+                </td>
+            </tr>
+            <tr>
+                <td class="reglbl">Customer Type</td>
+                <td>
+                    <select class="loginInput" name="type" required>
+                        <option default>Click here to select</option>
+                        <option value="buyer">Buyer</option>
+                        <option value="seller">Seller</option>
+                        <option value="escrow">Escrow</option>
+                        <option value="bank">Bank</option>
+                    </select>
+                </td>
+            </tr>
+        </form>
+           </div>
+           
+           <!-- Modal footer -->
+           <div class="modal-footer">
+            <button type="button" class="btn" data-dismiss="modal">Register</button>
+           </div>
+           
+         </div>
+       </div>
+     </div>
+</div>
+<div class="loginContainer">
+    <div class="navbar">
+        <div class="bcgif"></div>
+        <div class="itcLogo"></div>
+        <div class="hlfLogo"></div>
+        <div class="login">
+            <form>
+                
+            </form>
+        </div>
+    </div>
+    
+    <div class="regContainer">
+        <div style="text-align: center;padding-top: 5vh">
+            <h1>Login Here</h1>
+        </div>
+            <form >
+                <p>
+                    <mat-form-field>
+                      <mat-label>User Name</mat-label>
+                      <input [(ngModel)]='username' matInput placeholder="Enter Your UserName Here" [formControl]="un" required>
+                      <mat-error *ngIf="un.invalid">{{getErrorMessage()}}</mat-error>
+                    </mat-form-field>
+                  </p>
+                  <p>
+                    <mat-form-field>
+                      <mat-label>Password</mat-label>
+                      <input type="password" [(ngModel)]='password' matInput placeholder="Enter Your Password Here" [formControl]="pwd" required>
+                      <mat-error *ngIf="pwd.invalid">{{getErrorMessage()}}</mat-error>
+                    </mat-form-field>
+                  </p>
+                    <input type="submit"   class="loginSub" style="display: none">
+            </form>
+                     <!-- <button (click)="onLogin()" [disabled]=checkDisable() class="btn">Login</button> while this button is clicked, upper hidden input button should be clicked internally -->
+                <div class="button-row">
+                    <button mat-raised-button color="warn" (click)="onLogin()" [disabled]=checkDisable()>Login</button>    
+                    <button mat-raised-button color="primary" data-toggle="modal" [disabled]=true data-target="#myModal">Register</button>
+                </div>
+                <div class="button-row">
+                    <a mat-button routerLink=".">forgot password</a>
+                </div>
+</div>     
+</div>

@@ -1,0 +1,157 @@
+<ng-template #template2>
+  <div class="modal-header" style="background: rgb(100, 100, 100);color:azure">
+    <br>
+    <h4 id="dialog-sizes-name1" class="modal-title pull-left">Transaction Details From BlockChain Ledger</h4>
+    <button type="button" class="close pull-right" (click)="modalRef.hide()" aria-label="Close">
+      <span aria-hidden="true" style="color:azure">X</span>
+    </button>
+    <br>
+  </div>
+  <div class="modal-body" style="background: rgb(100, 100, 100);color:azure;text-align: center">
+    <div *ngIf=amt style="text-align: center">
+      <h1>
+        <b>Transaction Type : {{tType}}</b>
+      </h1>
+      <br>
+      <table class="table table-bordered center">
+        <tr>
+          <th>
+            Transferred By
+          </th>
+          <td>{{from}}</td>
+        </tr>
+        <tr>
+          <th>
+            Current Acc Balance
+          </th>
+          <td>{{fromBal}}</td>
+        </tr>
+        <tr>
+          <th>
+            Received By
+          </th>
+          <td>{{to}}</td>
+        </tr>
+        <tr>
+          <th>
+            Current Acc Balance
+          </th>
+          <td>{{toBal}}</td>
+        </tr>
+        <tr>
+          <th>
+            Amount Transferred
+          </th>
+          <td>{{tAmt}}</td>
+        </tr>
+        <tr>
+          <th>
+            Transaction Id
+          </th>
+          <td>{{tid}}</td>
+        </tr>
+      </table>
+    </div>
+    <div *ngIf=ass style="text-align: center">
+      <h1>
+        <b>Transaction Type : {{tType}}</b>
+      </h1>
+      <br>
+      <table class="table table-bordered">
+        <tr>
+          <th>{{co}}</th>
+          <td>{{coVal}}</td>
+        </tr>
+        <tr>
+          <th>{{po}}</th>
+          <td>{{poVal}}</td>
+        </tr>
+        <tr>
+          <th>Propert Type</th>
+          <td>{{t}}</td>
+        </tr>
+        <tr>
+          <th>Encrypted Property</th>
+          <td>{{tVal}}</td>
+        </tr>
+        <tr>
+          <th>Transaction Id</th>
+          <td>{{tid}}</td>
+        </tr>
+      </table>
+
+    </div>
+    <br>
+  </div>
+  <div class="modal-footer" style="background: rgb(100, 100, 100);color:azure">
+    <br>
+    <button type="button" class="btn btn-danger" aria-label="Close" (click)="modalRef.hide()" style="font-size: 1vw;">
+      <span aria-hidden="true">Close</span>
+    </button>
+    <br>
+  </div>
+</ng-template>
+
+
+
+<div *ngIf="transactions?.length;else no_data_templ" class="container" style="width: 80vw">
+  <h2>All Transactions</h2>
+  <!-- <button [disabled]='disableDetails' (click)="lgModal.show();onDetails()" class="btn btn-info btn-lg pull-right" style="margin-top: -3%">Show Ledger Details</button>
+    <button (click)='getAllTids()' class="btn btn-danger btn-lg pull-right" style="margin-top: -3%;margin-right: 4%;">Refresh</button> -->
+  <button class="mat-elevation-z15" mat-raised-button color="primary" [disabled]='disableDetails' id='buyButton' (click)="openModal(template2);onDetails()"
+    data-backdrop="false">Show Ledger Details</button>
+  <button class="mat-elevation-z15" mat-raised-button color="warn" type="button" (click)='getAllTids()'>Refresh</button>
+
+  <p>Select a Row to View Transation Details</p>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!-- Title Column -->
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef> Title </th>
+      <td mat-cell *matCellDef="let element"> {{element.property.title}} </td>
+    </ng-container>
+
+    <!-- tType Column -->
+    <ng-container matColumnDef="ttype">
+      <th mat-header-cell *matHeaderCellDef> Transaction Type </th>
+      <td mat-cell *matCellDef="let element"> {{element.tType}} </td>
+    </ng-container>
+
+    <!-- tDesc Column -->
+    <ng-container matColumnDef="tdesc">
+      <th mat-header-cell *matHeaderCellDef> Transaction Description </th>
+      <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+    </ng-container>
+
+    <!-- done by Info Column -->
+    <ng-container matColumnDef="doneby">
+      <th mat-header-cell *matHeaderCellDef> Transaction Done By </th>
+      <td mat-cell *matCellDef="let element"> {{element.user}} </td>
+    </ng-container>
+
+    <!-- time Info Column -->
+    <ng-container matColumnDef="time">
+      <th mat-header-cell *matHeaderCellDef> Transaction Time </th>
+      <td mat-cell *matCellDef="let element"> {{toDate(element.createdAt)}} </td>
+    </ng-container>
+
+    <!-- Tid Info Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> Transaction ID </th>
+      <td mat-cell *matCellDef="let element"> {{element.tId}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns; let i=index" [ngClass]="{'highlight': selectedTransRow == i}"
+      (click)="onTransRowSelect(i)"></tr>
+  </table>
+  <mat-paginator [pageSize]="7"></mat-paginator>
+</div>
+
+<ng-template #no_data_templ>
+  <div class="container">
+    <!-- <button (click)='getAllTids()' class="btn btn-danger btn-lg" style="margin-left: 90%;margin-bottom: -5%">Refresh</button> -->
+    <button class="mat-elevation-z15" mat-raised-button color="accent" (click)=getAllTids() class="pull-right" style="margin-top: 10%">Refresh</button>
+    <h2>No data found...</h2>
+  </div>
+</ng-template>

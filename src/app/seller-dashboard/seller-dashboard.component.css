@@ -1,0 +1,256 @@
+.table tr.active td {
+    background-color:#123456 !important;
+    color: white;
+  }
+
+  .container a{
+    color: #e0e0e0;
+    font-weight: bold;
+    text-shadow: 2px, 2px, 2px, 2px black;
+}
+
+.container a:hover{
+    cursor: pointer;
+    color: #e0e0e0;
+    font-weight: bold;
+    text-shadow: 2px, 2px, 2px, 2px black;
+    font-size: 1vw;
+}
+
+.progBar{
+    position: absolute;
+    bottom: 10vh;
+    left: 0vw;
+    width: 80%;
+    height: 15vh;
+  }
+  
+.staticLogo{
+    background: url('/assets/icons/sellerlogo.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    position: fixed;
+    bottom: 0;
+    right: 1vw;
+    height: 15vh;
+    width: 7vw;
+    border: 1px solid white
+}
+
+/* progress bar css code down below --> */
+
+.multistep{
+    width: 100vw;
+}
+
+.multistep .multistep-step {
+  padding: 0;
+  position: relative;
+  margin-bottom: 10px;
+  margin-top: 2vh;
+  width: 10%;
+}
+
+  .multistep .multistep-step .multistep-stepname {
+      margin-bottom: 16px;
+      color: #595959;
+      font-size: 1vw;
+      white-space: nowrap;
+  }
+
+  .multistep .multistep-step .multistep-dot {
+      position: absolute;
+      right: 50%;
+      left: 50%;
+      width: 32px;
+      height: 32px;
+      display: block;
+      margin-top: -16px;
+      margin-left: -15.5px;
+      border-radius: 50%;
+      background: #f5f5f5;
+      /* Inner Dot */
+  }
+
+      .multistep .multistep-step .multistep-dot:after {
+          content: ' ';
+          border-radius: 50px;
+          position: absolute;
+          top: 8px;
+          bottom: 8px;
+          left: 8px;
+          right: 8px;
+          background: #e0e0e0;
+      }
+
+  .multistep .multistep-step .progress {
+      position: absolute;
+      width: 100%;
+      height: 10.56px;
+      margin-top: -5.28px;
+      box-shadow: none;
+      border-radius: 0;
+  }
+
+      .multistep .multistep-step .progress .progress-bar {
+          width: 0px;
+          box-shadow: none;
+          background: rgb(139, 167, 241);
+      }
+
+  .multistep .multistep-step:first-child > .progress {
+      left: 50%;
+      width: 50%;
+  }
+
+  .multistep .multistep-step:last-child > .progress {
+      width: 50%;
+  }
+
+  .multistep .multistep-step.complete .multistep-dot {
+      background: rgb(139, 167, 241);
+  }
+
+      .multistep .multistep-step.complete .multistep-dot:after {
+          background: #356AF8;
+      }
+
+  .multistep .multistep-step.complete .progress > .progress-bar {
+      width: 100%;
+  }
+
+  .multistep .multistep-step.next:hover .multistep-dot {
+      background:rgb(139, 167, 241);
+  }
+
+      .multistep .multistep-step.next:hover .multistep-dot:after {
+          background: #356AF8;
+      }
+
+  .multistep .multistep-step.current .multistep-dot {
+      background: rgb(139, 167, 241);
+  }
+
+      .multistep .multistep-step.current .multistep-dot:after {
+          background: #356AF8;
+      }
+
+  .multistep .multistep-step.current .progress > .progress-bar {
+      width: 50%;
+  }
+
+  .multistep .multistep-step.current:first-child > .progress > .progress-bar {
+      width: 0%;
+  }
+
+  .multistep .multistep-step.current:last-child > .progress > .progress-bar {
+      width: 100%;
+  }
+
+  .multistep .multistep-step a.multistep-dot {
+      pointer-events: none;
+  }
+
+  .multistep .multistep-step.next a.multistep-dot {
+      pointer-events: all;
+  }
+
+
+  .example-fill-remaining-space {
+    /* This fills the remaining space, by using flexbox. 
+       Every toolbar row uses a flexbox row layout. */
+    flex: 1 1 auto;
+  }
+  .mat-toolbar{
+    font-family: "OverpassMono-bold" !important;
+	font-style: "semi-bold" !important;
+  }
+  .mat-toolbar span{
+    margin-left: 1vw;
+    cursor: pointer;
+  }
+  .highlight{
+    background-color: rgb(8, 156, 107);
+  }
+
+  .matbtn{
+    margin-left: -0.5vw;
+    margin-right:0.5vw; 
+    margin-top: 2vh;
+    font-family: "OverpassMono-bold" !important;
+	font-style: "semi-bold" !important;
+  }
+
+  .refresh{
+      margin-left: 85%;
+      margin-bottom: 3vh;
+      font-family: "OverpassMono-bold" !important;
+      font-style: "semi-bold" !important;
+  }
+
+  .list-group{
+      margin: auto;
+      width: 80%;
+  }
+  .list-group-item{
+    border: 3px solid #ddd;
+    border-radius: 10px;
+    background: none;
+    margin-bottom: 1vh;
+    padding: 18px 15px;
+    font-family: "OverpassMono-bold" !important;
+	font-style: "semi-bold" !important;
+  }
+  .send{
+    margin-bottom: 2vh;
+    font-family: "OverpassMono-bold" !important;
+	font-style: "semi-bold" !important;
+  }
+  .succ{
+    color: rgb(23, 199, 38);
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .example-full-width {
+    width: 100%;
+  }
+
+  table{
+    width: 100%;
+}
+.mat-header-cell{
+    text-align: center;
+    font-size: 1vw;
+    font-weight: bold;
+  }
+  .mat-row{
+      cursor: pointer;
+  }
+  .mat-row:hover{
+    background-color: rgb(143, 219, 194);
+}
+  .mat-cell{
+    text-align: center;
+    font-size: 0.8vw;
+  }
+
+  .mat-form-field{
+    width: 100%;
+    font-size: 20px !important;
+    font-family: "OverpassMono-bold" !important;
+	font-style: "semi-bold" !important;
+}
+inp{
+    margin-right:10vw;
+}
+h2, p, table{
+	font-family: "OverpassMono-bold" !important;
+	font-style: "semi-bold" !important;
+  }

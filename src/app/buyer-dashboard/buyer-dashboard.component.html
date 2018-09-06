@@ -1,0 +1,219 @@
+<!-- Modal For Property-Details -->
+<div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1"
+     role="dialog" aria-labelledby="dialog-sizes-name1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="text-align: center;color: black">
+        <h2 id="dialog-sizes-name1" class="modal-title">Property Details</h2>
+      </div>
+      <div class="modal-body" style="text-align: center;color: black">
+          <div style="text-align: center">
+              <span><h3><b>{{pTitle}}</b></h3></span>
+              <span><h4><b>{{pAddr}}</b></h4></span>
+            </div>
+        <carousel>
+          <slide>
+            <img [src]="img1" alt="first slide" style="display: block; width: 100%;">
+            <div class="carousel-caption d-none d-md-block">
+              <h3>{{img1lbl}}</h3>
+              <h3>{{pPrice | currency:'GBP':'symbol':'1.0-2'}}</h3>
+            </div>
+          </slide>
+          <slide>
+            <img [src]="img2" alt="second slide" style="display: block; width: 100%;">
+            <div class="carousel-caption d-none d-md-block">
+              <h3>{{img2lbl}}</h3>
+              <h3>{{pPrice | currency:'GBP':'symbol':'1.0-2'}}</h3>
+            </div>
+          </slide>
+          <slide>
+            <img [src]="img3" alt="third slide" style="display: block; width: 100%;">
+            <div class="carousel-caption d-none d-md-block">
+              <h3>{{img3lbl}}</h3>
+              <h3>{{pPrice | currency:'GBP':'symbol':'1.0-2'}}</h3>
+            </div>
+          </slide>
+          <slide>
+              <img [src]="img4" alt="first slide" style="display: block; width: 100%;">
+              <div class="carousel-caption d-none d-md-block">
+                <h3>{{img4lbl}}</h3>
+                <h3>{{pPrice | currency:'GBP':'symbol':'1.0-2'}}</h3>
+              </div>
+            </slide>
+        </carousel> 
+        <div>
+          <h2>Property Description :</h2>
+          <h5>{{pDesc}}</h5>
+        </div>
+    </div>
+    <div class="modal-footer" style="color: black">
+      <button type="button" class="btn btn-danger" aria-label="Close" (click)="lgModal.hide()">
+        <span aria-hidden="true">Close</span>
+      </button>
+    </div>
+    </div>
+  </div>
+</div>
+
+  <mat-toolbar id = "buyerHead">
+    <span class="pull-left"><img style="width:7vw;height:100%" src="/assets/icons/index.png"></span>
+  <span>Welcome Buyer</span>
+  <span>Home</span>
+  <span style="margin-left: 2px" style="color: rgb(23, 199, 38)">My Account</span>
+<span class="example-fill-remaining-space"></span>
+<mat-slide-toggle [checked]="dark" (change)="dark=!dark;toggleTheme();" color="accent">Dark theme</mat-slide-toggle>
+<span class="example-fill-remaining-space"></span>
+  <span>About</span>
+  <span routerLink="/login"style="margin-left: 2px" style="color: rgb(199, 64, 23) !important">Logout</span>
+  <span style="right: 0"><img style="width:7vw;height: 100%;" src="/assets/icons/logo_colored.png"></span>
+</mat-toolbar>
+
+<nav class="navbar navbar-default" id="materialMenu">
+    <button [matMenuTriggerFor]="menu">
+        <span class="glyphicon">&#xe012;</span>
+      </button>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+            <span class="glyphicon">&#xe021;</span>
+          <span>Home</span>
+        </button>
+        <button mat-menu-item>
+          <span class="glyphicon">&#xe085;</span>
+          <span>About</span>
+        </button>
+        <button mat-menu-item>
+          <span class="glyphicon" style="color: rgb(23, 199, 38)">&#xe008;</span>
+          <span>My Account</span>
+        </button>
+        <a mat-menu-item href="http://localhost:4200/login">
+            <span class="glyphicon" style="color: rgb(199, 64, 23)">&#xe163;</span>
+            <span>Logout</span>
+        </a>
+
+      </mat-menu>
+
+    <span  style="color: rgb(23, 93, 199);margin-right: 5px;margin-left: 3px"> Welcome Buyer</span>
+    <span  class="pull-right" style="padding-right: 10px;height: 100%;margin-left: 10px"><img style="max-width:140px;max-height: 30px" src="/assets/icons/index.png"></span>
+    <span  class="pull-right" style="padding-right: 10px;height: 100%;margin-left: 10px"><img style="max-width:140px;max-height: 30px;margin-top: 3px;margin-right: 5px;" src="/assets/icons/logo_colored.png"></span>
+    
+</nav>
+
+<mat-tab-group mat-stretch-tabs>
+    <mat-tab label="Listed Properties" (select)="addProgBar()">
+
+        <h2 class="text-center"><b>On-Sale Properties</b></h2>
+        <p class="text-center">Select a Property to Buy. Click on Details to view property description.</p>
+      
+        <table mat-table [dataSource]="this.helper.properties" class="mat-elevation-z8">
+      
+          <!-- Sl. No. Column -->
+          <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef> Sl. No. </th>
+            <td mat-cell *matCellDef="let index = index"> {{index+1}} </td>
+          </ng-container>
+        
+          <!-- Title Column -->
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef> Title </th>
+            <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+          </ng-container>
+        
+          <!-- Location Column -->
+          <ng-container matColumnDef="location">
+            <th mat-header-cell *matHeaderCellDef> Location </th>
+            <td mat-cell *matCellDef="let element"> {{element.location}} </td>
+          </ng-container>
+        
+          <!-- Price Column -->
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef> Price </th>
+            <td mat-cell *matCellDef="let element"> {{element.price | currency:'GBP'}} </td>
+          </ng-container>
+      
+          <!-- Contact Info Column -->
+          <ng-container matColumnDef="contact">
+             <th mat-header-cell *matHeaderCellDef> Contact Info </th>
+              <td mat-cell *matCellDef="let element"> +44 {{element.contact}} </td>
+          </ng-container>
+        
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row id="row" *matRowDef="let row; columns: displayedColumns; let i=index" [ngClass]="{'highlight': selectedRow == i}" (click)="onRowSelect(i)"></tr>
+        </table>
+
+        <div class='text-center'>
+            <div class='button-row'>
+                <button class="matbtn mat-elevation-z15" mat-raised-button color="warn" [disabled]='disableFlag' id='buyButton' (click)=onBuy()>Buy Property</button>
+                <button class="mat-elevation-z15" mat-raised-button color="primary" [disabled]='disableFlag' type="button" (click)="lgModal.show();onView()">Property Details</button>
+              </div>
+        </div>
+
+
+    </mat-tab>
+    <mat-tab label="Current Transactions" (select)="addProgBar()">
+      
+        <h2 style="text-align: center"><b>Properties Under Transaction</b></h2>
+        
+        <button class="mat-elevation-z15" mat-raised-button color="accent" (click)=getAllTps() class="pull-right" style="margin-top: -2%;margin-right: 2%;">Refresh</button>
+        <p class="text-center">Select a row and click on Proceed to continue</p>
+        
+
+        <table mat-table [dataSource]="tsp" class="mat-elevation-z8">
+
+            <!-- Title Column -->
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef> Title </th>
+              <td mat-cell *matCellDef="let element"> {{element.property.title}} </td>
+            </ng-container>
+          
+            <!-- Escrow Name Column -->
+            <ng-container matColumnDef="escrow">
+              <th mat-header-cell *matHeaderCellDef> Escrow Name </th>
+              <td mat-cell *matCellDef="let element"> Escrow </td>
+            </ng-container>
+          
+            <!-- Seller Name Column -->
+            <ng-container matColumnDef="seller">
+              <th mat-header-cell *matHeaderCellDef> Seller Name </th>
+              <td mat-cell *matCellDef="let element"> Seller </td>
+            </ng-container>
+          
+            <!-- Bank Name Column -->
+            <ng-container matColumnDef="bank">
+              <th mat-header-cell *matHeaderCellDef> Bank Name </th>
+              <td mat-cell *matCellDef="let element"> Bank </td>
+            </ng-container>
+        
+            <!-- Title Amount Column -->
+            <ng-container matColumnDef="price">
+               <th mat-header-cell *matHeaderCellDef> Title Amount </th>
+                <td mat-cell *matCellDef="let element"> {{element.property.price | currency:'GBP'}} </td>
+            </ng-container>
+
+            <!-- Transaction Status Column -->
+            <ng-container matColumnDef="tStatus">
+               <th mat-header-cell *matHeaderCellDef> Transaction Status </th>
+                <td mat-cell *matCellDef="let element"> {{getTransStatus(element.tp)}} </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns2; let i=index" [ngClass]="{'highlight': selectedTpRow == i}" (click)="onTpRowSelect(i)"></tr>
+          </table>
+
+        <div class='text-center'>
+            <button class="mat-elevation-z15 btn" mat-raised-button color="primary" [disabled]='disableContinue' id='continueButton' (click)=onContinue() >Proceed</button>
+        </div>
+
+    </mat-tab>
+    <mat-tab label="Transaction Details"  (select)="remvProgBar()">
+        <app-trans-table *ngIf="this.helper.token!=''" [helper]='helper'>
+        </app-trans-table> 
+    </mat-tab>
+  </mat-tab-group>
+
+
+
+<!-- logo -->
+
+<div class="staticLogo">
+
+</div>

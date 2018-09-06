@@ -1,0 +1,321 @@
+<!-- MOdal for property add -->
+<ng-template #template>
+  <div class="modal-header" style="background: rgb(168, 168, 168);color:azure">
+    <h2 class="modal-title pull-left">Add Property</h2>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">X</span>
+    </button>
+  </div>
+  <div class="modal-body" style="background: rgb(168, 168, 168);color:azure">
+    <form>
+      <p>
+        <mat-form-field >
+          <mat-label>Title</mat-label>
+          <input [(ngModel)]='Title' matInput placeholder="Enter Propert Title Here" [formControl]="tt" required>
+          <mat-error *ngIf="tt.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <mat-label>Location</mat-label>
+          <input [(ngModel)]='Location' matInput placeholder="Enter Property Location Here" [formControl]="loc" required>
+          <mat-error *ngIf="loc.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <mat-label>Price</mat-label>
+          <input type="number" [(ngModel)]='Price' matInput placeholder="Enter Property Price Here" [formControl]="p" required>
+          <mat-error *ngIf="p.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <mat-label>Contact Information</mat-label>
+          <input type="number" [(ngModel)]='Contact' matInput placeholder="Enter Your Contact Information Here" [formControl]="c" required>
+          <mat-error *ngIf="c.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </p>
+      <button [disabled]="checkAddDisable()" (click)="modalRef.hide()" class="btn btn-lg btn-primary btn-block " type="submit">Submit</button>
+    </form>
+    <!-- <form (ngSubmit)="onAdd()">
+        <div class='form-group'>
+          <label for="ntitle">
+            <span style="font-size:20px">Title</span>
+          </label>
+  
+          <input type="text" [(ngModel)]='ntitle' class="form-control" id="ntitle" name="ntitle" placeholder="Enter Title" required
+            autofocus />
+  
+        </div>
+        <div class='form-group'>
+          <label for="nlocation">
+            <span style="font-size:20px">Location</span>
+          </label>
+          <input type="text" [(ngModel)]='nlocation' class="form-control" id="nlocation" name="nlocation" placeholder="Enter Location"
+            required/>
+  
+        </div>
+        <div class='form-group'>
+          <label for="nprice">
+            <span style="font-size:20px">Price</span>
+          </label>
+  
+          <input type="number" [(ngModel)]='nprice' class="form-control" id="nprice" name="nprice" placeholder="Enter Price" required/>
+  
+        </div>
+        <div class='form-group'>
+          <label for="ncontact">
+            <span style="font-size:20px">Contact</span>
+          </label>
+          <input type="number" [(ngModel)]='ncontact' class="form-control" id="ncontact" name="ncontact" placeholder="Enter Contact"
+            required/>
+        </div>
+        <button [disabled]="checkAddDisable()" (click)="modalRef.hide()" class="btn btn-lg btn-primary btn-block " type="submit">Submit</button>
+      </form> -->
+  </div>
+</ng-template>
+
+<mat-toolbar id="buyerHead">
+  <span class="pull-left">
+    <img style="width:7vw;height:100%" src="/assets/icons/index.png">
+  </span>
+  <span>Welcome Seller</span>
+  <span routerLink="/seller">Home</span>
+  <span routerLink="/seller" style="margin-left: 2px" style="color: rgb(23, 199, 38)">My Account</span>
+  <span class="example-fill-remaining-space"></span>
+  <mat-slide-toggle [checked]="dark" (change)="dark=!dark;toggleTheme();" color="accent">Dark theme</mat-slide-toggle>
+  <span class="example-fill-remaining-space"></span>
+  <span>About</span>
+  <span routerLink="/login" style="margin-left: 2px" style="color: rgb(199, 64, 23) !important">Logout</span>
+  <span style="right: 0">
+    <img style="width:7vw;height: 100%;" src="/assets/icons/logo_colored.png">
+  </span>
+</mat-toolbar>
+
+<mat-tab-group mat-stretch-tabs [selectedIndex]=selectedTab #tabGroup (selectedTabChange)="tabChanged($event)">
+  <mat-tab label="Properties">
+    <h2 style="text-align: center">
+      <b> My Listed Properties</b>
+    </h2>
+    <br>
+    <table mat-table [dataSource]="pp" class="mat-elevation-z8">
+
+      <!-- Sl. No. Column -->
+      <ng-container matColumnDef="index">
+        <th mat-header-cell *matHeaderCellDef> Sl. No. </th>
+        <td mat-cell *matCellDef="let index = index"> {{index+1}} </td>
+      </ng-container>
+
+      <!-- Title Column -->
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef> Title </th>
+        <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+      </ng-container>
+
+      <!-- Location Column -->
+      <ng-container matColumnDef="location">
+        <th mat-header-cell *matHeaderCellDef> Location </th>
+        <td mat-cell *matCellDef="let element"> {{element.location}} </td>
+      </ng-container>
+
+      <!-- Price Column -->
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef> Price </th>
+        <td mat-cell *matCellDef="let element"> {{element.price | currency:'GBP':'symbol':'1.0-2'}} </td>
+      </ng-container>
+
+      <!-- Contact Info Column -->
+      <ng-container matColumnDef="contact">
+        <th mat-header-cell *matHeaderCellDef> Contact Info </th>
+        <td mat-cell *matCellDef="let element">+44 {{element.contact}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns; let i=index" [ngClass]="{'highlight': selectedRow == i}" (click)="onRowSelect(i)"></tr>
+    </table>
+    <div class='text-center'>
+      <!-- <button (click)="openModal(template)" class='btn btn-primary'>Add Property</button>&nbsp;&nbsp;&nbsp;&nbsp;
+      <button [disabled]='disableFlag' id='deleteButton' (click)=onDelete() class='btn btn-danger'>Delete Property</button> -->
+      <button class="matbtn mat-elevation-z15" mat-raised-button color="primary" id='buyButton' (click)=openModal(template)>Add Property</button>
+      <button class="mat-elevation-z15" mat-raised-button color="warn" [disabled]='disableFlag' type="button" (click)="onDelete()">Delete Property</button>
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Properties Under Transaction">
+    
+    <h2 style="text-align: center"><b>Properties Under Transaction</b></h2>
+        
+        <button class="mat-elevation-z15" mat-raised-button color="accent" (click)=getAllTps() class="pull-right" style="margin-top: -2%;margin-right: 2%;">Refresh</button>
+        <p class="text-center">Select a row and click on Proceed to continue</p>
+
+    <table mat-table [dataSource]="tsp" class="mat-elevation-z8">
+
+      <!-- Title Column -->
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef> Title </th>
+        <td mat-cell *matCellDef="let element"> {{element.property.title}} </td>
+      </ng-container>
+
+      <!-- Escrow Name Column -->
+      <ng-container matColumnDef="escrow">
+        <th mat-header-cell *matHeaderCellDef> Escrow Name </th>
+        <td mat-cell *matCellDef="let element"> Escrow </td>
+      </ng-container>
+
+      <!-- Seller Name Column -->
+      <ng-container matColumnDef="seller">
+        <th mat-header-cell *matHeaderCellDef> Seller Name </th>
+        <td mat-cell *matCellDef="let element"> Seller </td>
+      </ng-container>
+
+      <!-- Bank Name Column -->
+      <ng-container matColumnDef="bank">
+        <th mat-header-cell *matHeaderCellDef> Bank Name </th>
+        <td mat-cell *matCellDef="let element"> Bank </td>
+      </ng-container>
+
+      <!-- Title Amount Column -->
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef> Title Amount </th>
+        <td mat-cell *matCellDef="let element"> {{element.property.price | currency:'GBP'}} </td>
+      </ng-container>
+
+      <!-- Transaction Status Column -->
+      <ng-container matColumnDef="tStatus">
+        <th mat-header-cell *matHeaderCellDef> Transaction Status </th>
+        <td mat-cell *matCellDef="let element"> {{getTransStatus(element.tp)}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns2; let i=index" [ngClass]="{'highlight': selectedTpRow == i}" (click)="onTpRowSelect(i)"></tr>
+    </table>
+
+    <div class='text-center'>
+      <!-- <button [disabled]='proceedDisable' (click)="onProceed()" class='btn btn-primary'>Proceed</button> -->
+      <button class="mat-elevation-z15 matbtn" [disabled]='proceedDisable' mat-raised-button color="primary" type="button" (click)="onProceed()">Proceed</button>
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Approval Requests/Notifications" [disabled]="isDisabled">
+    <h2 style="text-align: center">
+      <b>Notifications</b>
+    </h2>
+    <button class="mat-elevation-z15 refresh" mat-raised-button color="accent" type="button" (click)="this.helper.checkStatus()">Refresh</button>
+    <!-- <button (click)="this.helper.checkStatus()" class="btn btn-danger btn-lg" style="margin-left: 90%;margin-top: -5%">Refresh</button> -->
+    <ul class="list-group" style="font-size: 19px">
+      <li *ngIf='check3not()' class="list-group-item">An amount of {{this.helper.property.price | currency:'GBP':'symbol':'1.0-2'}} generated from the sale of your listed
+        property has been credited to your account.
+      </li>
+      <li  *ngIf='check2not()' class="list-group-item">Escrow Received 10% amount,Send title to escrow
+        <!-- <button *ngIf='!check2Approval()' (click)='approve2()' class="btn btn-primary pull-right">Approve</button> -->
+        <button [disabled]="pUp" *ngIf='!check2Approval()' class="mat-elevation-z15 matbtn pull-right send" style="margin-top:-1vh" mat-raised-button color="primary" type="button" (click)="approve2()">Approve</button>
+        <span *ngIf='check2Approval()' class="pull-right succ">Approved
+          <span class="glyphicon glyphicon-ok"></span>
+        </span>
+          <input type="file" style="font-size: 14px;margin-right: 10%" class="pull-right" *ngIf=!check2Approval() id="file" (change)="titleUp($event.target.files)">
+      </li>
+      <li style="padding-bottom: 20px" *ngIf='check1not()' class="list-group-item">Send Property details to Buyer
+        <!-- <button *ngIf='!check1Approval()' (click)='approve1()' class="btn btn-primary pull-right">Send</button> -->
+        <button [disabled]="pDetUp" class="mat-elevation-z15 pull-right send" *ngIf='!check1Approval()' mat-raised-button color="primary" type="button"
+          (click)="approve1()">Send</button>
+        <span *ngIf='check1Approval()' class="pull-right succ">Sent Successfully
+          <span class="glyphicon glyphicon-ok"></span>
+        </span>
+        <input type="file" *ngIf=!check1Approval() style="font-size: 14px;margin-right: 10%;" class="pull-right" id="file" (change)="titleRecordUp($event.target.files)">
+      </li>
+
+    </ul>
+  </mat-tab>
+
+  <mat-tab label="Transaction Details">
+    <app-trans-table *ngIf="this.helper.token!=''" [helper]='helper'></app-trans-table>
+  </mat-tab>
+</mat-tab-group>
+
+<div class="staticLogo">
+
+</div>
+
+<!-- Progress Bar Down Below -->
+<div class="progBar" *ngIf="prog">
+  <div class="container" style="width: 100%;">
+
+    <div class="row multistep">
+      <div class="col-xs-3 multistep-step disabled" [class.complete]='this.helper.SN()'>
+        <div class="text-center multistep-stepname">Seller Notified</div>
+        <div class="progress">
+          <div class="progress-bar"></div>
+        </div>
+        <span class="multistep-dot"></span>
+      </div>
+      <div class="col-xs-3 multistep-step disabled" [class.complete]='this.helper.SApp()'>
+        <div class="text-center multistep-stepname">Seller Approved</div>
+        <div class="progress">
+          <div class="progress-bar"></div>
+        </div>
+        <span class="multistep-dot"></span>
+      </div>
+
+      <div class="col-xs-3 multistep-step disabled" [class.complete]='this.helper.LApl()'>
+        <div class="text-center multistep-stepname">Loan Application</div>
+        <div class="progress">
+          <div class="progress-bar"></div>
+        </div>
+        <span class="multistep-dot"></span>
+      </div>
+
+      <div class="col-xs-3 multistep-step disabled" [class.complete]='this.helper.LApr()'>
+        <div class="text-center multistep-stepname">Loan Approval</div>
+        <div class="progress">
+          <div class="progress-bar"></div>
+        </div>
+        <span class="multistep-dot"></span>
+      </div>
+
+      <div class="col-xs-3 multistep-step disabled" [class.complete]='this.helper.PtoE()'>
+        <div class="text-center multistep-stepname">Payment to Escrow</div>
+        <div class="progress">
+          <div class="progress-bar"></div>
+        </div>
+        <span class="multistep-dot"></span>
+      </div>
+      <div class="col-xs-3 multistep-step disabled" [class.complete]='this.helper.ERecT()'>
+        <div class="text-center multistep-stepname">Escrow Received Title</div>
+        <div class="progress">
+          <div class="progress-bar"></div>
+        </div>
+        <span class="multistep-dot"></span>
+      </div>
+      <div class="col-xs-3 multistep-step disabled" [class.complete]='this.helper.MR()'>
+        <div class="text-center multistep-stepname">Mortgage Received</div>
+        <div class="progress">
+          <div class="progress-bar"></div>
+        </div>
+        <span class="multistep-dot"></span>
+      </div>
+      <div class="col-xs-3 multistep-step disabled" [class.complete]='this.helper.LAmtR()'>
+        <div class="text-center multistep-stepname">Loan Amount Received</div>
+        <div class="progress">
+          <div class="progress-bar"></div>
+        </div>
+        <span class="multistep-dot"></span>
+      </div>
+      <div class="col-xs-3 multistep-step disabled" [class.complete]='this.helper.SP()'>
+        <div class="text-center multistep-stepname">Seller Paid</div>
+        <div class="progress">
+          <div class="progress-bar"></div>
+        </div>
+        <span class="multistep-dot"></span>
+      </div>
+      <div class="col-xs-3 multistep-step disabled" [class.complete]='this.helper.BrecT()'>
+        <div class="text-center multistep-stepname">Bank Received Title</div>
+        <div class="progress">
+          <div class="progress-bar"></div>
+        </div>
+        <span class="multistep-dot"></span>
+      </div>
+    </div>
+
+  </div>
+</div>
