@@ -20,18 +20,6 @@ import { FromToServiceService } from './from-to-service.service';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { TransTableComponent } from './trans-table/trans-table.component';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import { ReactiveFormsModule } from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button';
-import {MatTableModule} from '@angular/material/table';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -54,19 +42,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     FormsModule,
     ModalModule.forRoot(),
     TabsModule.forRoot(),
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatTableModule,
-    MatCheckboxModule,
-    MatMenuModule,
-    MatToolbarModule,
-    MatTabsModule,
-    MatSlideToggleModule,
-    MatPaginatorModule
+    HttpClientModule
 
   ],
   providers: [FromToServiceService,BlockchainService],

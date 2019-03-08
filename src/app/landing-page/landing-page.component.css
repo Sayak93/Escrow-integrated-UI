@@ -3,8 +3,7 @@
     height: 100vh;
     background: url("/assets/image/landing.jpg");
 	background-size: 100% 100%;
-    background-repeat: no-repeat;
-    overflow: hidden;
+	background-repeat: no-repeat;
 }
 .navbar{
 	position: absolute;
@@ -68,7 +67,7 @@
 
 .left{
     position: relative;
-    top: 10vh;
+    top: 20vh;
     left: 0vw;
     width: 20vw;
     height: 70vh;
@@ -104,7 +103,7 @@
 
 .right{
     position: relative;
-    top: 10vh;
+    top: 20vh;
     left: 25vw;
     width: 20vw;
     height: 70vh;
@@ -125,7 +124,7 @@
 }
 
 .rightTabs{
-    margin-bottom: 5vh;
+    margin-bottom: 2vh;
     width: 100%;
     height: 16vh;
     color: black;
@@ -353,7 +352,6 @@ animation-delay: 3.5s;
     left: 1vw;
     top: 15vh;
     font-size: 1.2vw;
-    color: black !important;
     font-weight: bold;
     opacity: 0.0;
     animation-duration: 0.5s;
@@ -379,7 +377,6 @@ animation-delay: 3.5s;
     left: 2.5vw;
     top: 15vh;
     font-size: 1.2vw;
-    color: black !important;
     font-weight: bold;
     opacity: 0.0;
     animation-duration: 0.5s;
@@ -400,84 +397,3 @@ animation-delay: 3.5s;
     100% {opacity: 1.0;}
     }
 
-    @media screen and (max-width:400px){
-        .navbar{
-            border-bottom: 1px solid aquamarine
-        }
-        .itcLogo{
-            width: 40vw;
-        }
-        .hlfLogo{
-            width: 40vw;
-        }
-        .left{
-            display: none;
-        }
-        .right{
-            display: none;
-        }
-        .parent{
-            background: none;
-            overflow-y: hidden;
-        }
-        .itcLogo{
-            width: 40vw;
-        }
-        .hlfLogo{
-            background: url('/assets/icons/logo_colored.png');
-            background-size: 100% 100%;
-        }
-        .center{
-            width: 100%;
-            top:10vh;
-        }
-        .ttl{
-            font-size: 15px;
-        }
-        .esc{
-            font-size: 15px;
-        }
-        .escrow{
-            top: 4vh;
-            left: 2vw;
-        }
-        .sellerBank{
-            left: 56vw;
-            top: -14vh;
-        }
-        .seller{
-            top: -10vh;
-            left: 68vw;
-            height: 25%;
-            width: 20%;
-        }
-        .title{
-            top: 4vh;
-            left: 59vw;
-        }
-        .lender{
-            top: -5vh;
-            left: 20vw;
-        }
-        .buyer{
-            top: -40vh;
-            left: -5vw;
-        }
-        .gettingStarted a{
-            font-size: 15px;
-            text-align: center;
-            width: 100vw; 
-        }
-        @-webkit-keyframes gettingStarted {
-            100% {opacity: 1.0;top:85vh;text-align: center}
-        }
-        
-        @keyframes gettingStarted {
-            100% {opacity: 1.0;top: 85vh;text-align: center}
-        }
-    }
-
-    *{
-        font-family: "OverpassMono-bold" !important;
-        font-style: "semi-bold" !important;
-      }

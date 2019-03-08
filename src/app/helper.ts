@@ -30,10 +30,10 @@ export class Helper {
   a;
   key = CryptoJS.enc.Utf8.parse('7061737323313233');
   iv = CryptoJS.enc.Utf8.parse('7061737323313233');
-  token='';
+  token;
   public ls: Number;
   public property: Property;
-  public properties:Property[];
+
   public tps:TransactionPhase[];
 
   setProperty(property: Property) {
@@ -212,9 +212,6 @@ export class Helper {
       this.updateTid(trans);
       var str = 'Trasaction Details';
       var date = new Date()//.toLocaleDateString();
-      if(tType=='TitleRecord'){
-        tType='Property Details'
-      }
       alert("\t\t\t\t\t    " + str + "\n" + "\n\t\t\t\t\tTransaction Successful!\n\n\t\t\tSuccessfully Transfered " + tType + " to " + to + "\n\n\t\tOn   :  " + date + "\n\n\t\t\t\t\t     Transaction id is :\n\n" + data.TransactionID);
       //alert("Successfully Transfered " + tType + " to " + to + "\nTransaction ID : " + data.TransactionID);
       // localStorage.setItem('trans_Stage$',ls);
@@ -334,7 +331,7 @@ export class Helper {
       this._fromToService.upload(enc, docType, user, this.token).subscribe(data => {
         var date = new Date()//.toLocaleDateString();
         var str = 'Trasaction Details';
-        alert("\t\t\t\t\t\t" + str + "\n" + "\n\t\t\tSuccessfully uploaded Property Details to BlockChain ledger\n\n\t\t   On   :  " + date + "\n\n\t\t\t\t\t\tTransaction id is :\n\n" + data.message);
+        alert("\t\t\t\t\t\t" + str + "\n" + "\n\t\t\tSuccessfully uploaded Title-Record to BlockChain ledger\n\n\t\t   On   :  " + date + "\n\n\t\t\t\t\t\tTransaction id is :\n\n" + data.message);
         // localStorage.setItem('TRUpTxn_id', data.message);
         let tId = data.message;
         let trans = {
@@ -519,13 +516,6 @@ getTransStatus(i:number){
       .subscribe((data) => {
         //console.log("******FROM HELPER ",data);
         this.tps=data
-        
-    });
-    this.socketService.onProperties()
-      .subscribe((data) => {
-        console.log("******FROM HELPER properties:",data);
-
-        this.properties=data
         
     });
 

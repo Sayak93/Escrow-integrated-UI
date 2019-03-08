@@ -3,10 +3,9 @@ import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 
 import * as socketIo from 'socket.io-client';
-import { TransactionPhase, Transactions, Property } from './model';
+import { TransactionPhase, Transactions } from './model';
 
- const SERVER_URL = 'http://localhost:4000';
-//const SERVER_URL = 'http://192.168.43.220:4000'
+const SERVER_URL = 'http://localhost:4000';
 
 @Injectable({
   providedIn: 'root'
@@ -33,11 +32,6 @@ export class SocketService {
           this.socket.on('tps', (data) => observer.next(data));
       });
   }
-  public onProperties(): Observable<Property[]> {
-    return new Observable<Property[]>(observer => {
-        this.socket.on('properties', (data) => observer.next(data));
-    });
-}
   public onTids(): Observable<Transactions[]> {
     return new Observable<Transactions[]>(observer => {
         this.socket.on('tids', (data) => observer.next(data));

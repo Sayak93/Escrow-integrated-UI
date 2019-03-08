@@ -1,10 +1,10 @@
 import { CurrencyPipe } from '@angular/common';
 import { BlockchainService } from '../blockchain.service';
-import { Component, OnInit, ViewChild, HostBinding } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import * as CryptoJS from 'crypto-js';
-import { OverlayContainer} from '@angular/cdk/overlay';
+
 import { Helper } from '../helper';
 import { Property } from '../model';
 import { FromToServiceService } from './../from-to-service.service';
@@ -30,67 +30,35 @@ export class BuyerTransactionComponent implements OnInit {
   public prog = true;
   public cs = false;
   public helper:Helper;
-  public dark
 
 
-  constructor(private overlay: OverlayContainer,private socketService: SocketService,private titleService:Title,private _fromToService: FromToServiceService, private route: ActivatedRoute, private router: Router, private service: BlockchainService) {
+
+  constructor(private socketService: SocketService,private titleService:Title,private _fromToService: FromToServiceService, private route: ActivatedRoute, private router: Router, private service: BlockchainService) {
     this.helper=new Helper(socketService,_fromToService,service)
-  }
-  //material
-  @HostBinding('class') componentCssClass;
-  toggleTheme(): void {
-    console.log('toggle called');
-    
-    console.log('dark:',this.dark);
-    
-    if (this.overlay.getContainerElement().classList.contains("custom-theme")) {
-      this.overlay.getContainerElement().classList.remove("custom-theme");
-      this.overlay.getContainerElement().classList.add("light-custom-theme");
-    } else if (this.overlay.getContainerElement().classList.contains("light-custom-theme")) {
-      this.overlay.getContainerElement().classList.remove("light-custom-theme");
-      this.overlay.getContainerElement().classList.add("custom-theme");
-    } else {
-      this.overlay.getContainerElement().classList.add("light-custom-theme");
-    }
-    if (document.body.classList.contains("custom-theme")) {
-      document.body.classList.remove("custom-theme");
-      document.body.classList.add("light-custom-theme");
-    } else if (document.body.classList.contains("light-custom-theme")) {
-      document.body.classList.remove("light-custom-theme");
-      document.body.classList.add("custom-theme");
-    } else {
-      document.body.classList.add("light-custom-theme");
-    }
-  }
+    // service.sharedData.subscribe( data => {
 
-  goHome(){
-    console.log('val of dark:', this.dark);    
-    this.router.navigate(['/buyer', {isDark:this.dark}])
+    //   console.log(data)
+    //   this.EA = data;
+    // })
   }
 
 
   //******************************************INTEGRATION ************/
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      if(params.get('isDark')=='true'){
-        this.dark=true;
-      }
-      else{
-        this.dark=false
-      }
-      let id = params.get('id');
-      this.pid = id;
-      //this.property = this.pp.filter((pt) => pt._id == id)[0];
-    })
     this.titleService.setTitle('Buyer');
-    console.log('dark:',this.dark);
+
     this.property = new Property("","","",0,0);
   
     this.staticTabs.tabs[1].disabled = true;
     this.staticTabs.tabs[2].disabled = true;
     this.staticTabs.tabs[3].disabled = true;
     this.staticTabs.tabs[4].disabled = true;
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      let id = params.get('id');
+      this.pid = id;
+      //this.property = this.pp.filter((pt) => pt._id == id)[0];
+    })
     this._fromToService.enroll().subscribe(data => {
       //this.token = data.token;
       this.helper.setToken(data.token);

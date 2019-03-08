@@ -1,10 +1,10 @@
 import { CurrencyPipe } from '@angular/common';
 import { window } from 'rxjs/internal/operators';
-import { Component, OnInit, OnChanges,TemplateRef, ViewChild, HostBinding, HostListener  } from '@angular/core';
+import { Component, OnInit, OnChanges,TemplateRef } from '@angular/core';
 import { Property, Transactions, TransactionPhase } from '../model';
 import { FromToServiceService } from './../from-to-service.service';
 import { BlockchainService } from '../blockchain.service';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { resolve, reject } from 'q';
 import { Helper } from '../helper';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -12,7 +12,6 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { Title } from '@angular/platform-browser';
 import { SocketService } from '../socket.service';
-import { OverlayContainer} from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-buyer-dashboard',
@@ -25,7 +24,7 @@ export class BuyerDashboardComponent implements OnInit {
   public disableContinue = true;
   public disableDetails = true;
   //public pp=properties;
- // public pp: Property[];
+  public pp: Property[];
   public cpp: Property[];
   public transactions: Transactions[];
   public selectedRow: number;
@@ -43,7 +42,7 @@ export class BuyerDashboardComponent implements OnInit {
   public pAddr
   public pPrice
   public pDesc
-  public tsp
+
 
 //*************ProgressBar Variables***************/
 public SA = false
@@ -56,7 +55,6 @@ public MR= false
 public LAmtR= false
 public SP= false
 public BrecT= false
-public dark= false
 
 //***********************/
 
@@ -72,70 +70,11 @@ config = {
 };
   public selectedTpRow:number;
 
-  constructor(private overlay: OverlayContainer,private socketService: SocketService,private modalService: BsModalService,private titleService:Title,private _fromToService: FromToServiceService, private _myService: BlockchainService, private router: Router, private route: ActivatedRoute) {
+  constructor(private socketService: SocketService,private modalService: BsModalService,private titleService:Title,private _fromToService: FromToServiceService, private _myService: BlockchainService, private router: Router, private route: ActivatedRoute) {
     this.helper = new Helper(socketService,_fromToService, _myService)
-  }
-  @HostListener('document:click', ['$event']) clickedOutside($event){
-    if($event.target.nodeName!='TD'){
-      this.selectedRow=99;
-      this.selectedTpRow=99;
-      this.disableFlag=true;
-      this.disableContinue=true;
-    }
-  }
-  //material
-  @HostBinding('class') componentCssClass;
-  displayedColumns: string[] = [ 'index', 'title', 'location', 'price', 'contact' ];
-  displayedColumns2: string[] = [ 'title', 'escrow', 'seller', 'bank', 'price', 'tStatus' ];
-
-  toggleTheme(): void {
-    console.log('toggle called');
-    
-    console.log('dark:', this.dark);
-    if (this.overlay.getContainerElement().classList.contains("custom-theme")) {
-      this.overlay.getContainerElement().classList.remove("custom-theme");
-      this.overlay.getContainerElement().classList.add("light-custom-theme");
-    } else if (this.overlay.getContainerElement().classList.contains("light-custom-theme")) {
-      this.overlay.getContainerElement().classList.remove("light-custom-theme");
-      this.overlay.getContainerElement().classList.add("custom-theme");
-    } else {
-      this.overlay.getContainerElement().classList.add("light-custom-theme");
-    }
-    if (document.body.classList.contains("custom-theme")) {
-      document.body.classList.remove("custom-theme");
-      document.body.classList.add("light-custom-theme");
-    } else if (document.body.classList.contains("light-custom-theme")) {
-      document.body.classList.remove("light-custom-theme");
-      document.body.classList.add("custom-theme");
-    } else {
-      document.body.classList.add("light-custom-theme");
-    }
-  }
-
-  async toggle(){
-    await this.toggleTheme()
-    this.toggleTheme()
   }
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params: ParamMap)=>{
-      if(params.get('isDark')==null){
-        console.log('param is null');
-        this.toggleTheme();
-      }
-      else{
-        console.log('param is not null');
-        if(params.get('isDark')=='true'){
-          this.dark=true
-          this.toggle();
-        }
-        else{
-          this.dark=false
-        }
-      }
-    })
-    document.body.classList.add("light-custom-theme", "mat-app-background");
-    this.overlay.getContainerElement().classList.add("light-custom-theme");
     this.titleService.setTitle('Buyer');
     this._fromToService.enroll().subscribe(data => {
       this.token = data.token;
@@ -150,7 +89,6 @@ config = {
       })
       this.getAllTps();
       this.getProperties();
-      this.helper.initIoConnection();
 
     });
     document.body.classList.remove('bg-img');
@@ -160,10 +98,7 @@ config = {
   //*******************TP TABLE********** */
   async getAllTps(){
     await this._fromToService.getAllTps(this.helper.getToken()).subscribe(data=>{
-;
       this.helper.tps=data;
-      this.tsp=data; //material
-      console.log(this.tsp)
     })
   }
   onTpRowSelect(i: number) {
@@ -179,7 +114,7 @@ config = {
 
   onContinue() {
     let property = this.helper.tps[this.selectedTpRow].property;
-    this.router.navigate([property._id, {isDark:this.dark}], { relativeTo: this.route})
+    this.router.navigate([property._id], { relativeTo: this.route })
     
   }
 
@@ -238,26 +173,24 @@ config = {
     //   this.pp=data;
     // });
     await this._fromToService.getAllProp(this.helper.getToken()).subscribe(props => {
-      this.helper.properties = props;
-      console.log(this.helper.properties);
+      this.pp = props;
     })
   }
 
   onRowSelect(i: number) {
-    console.log(i);   
     this.disableFlag = false;
     this.selectedRow = i
   }
   
   onBuy() {
-    let property = this.helper.properties[this.selectedRow];
+    let property = this.pp[this.selectedRow];
     let trp={
       _id:'',
       tp:1,
       property
     }
     this.updateLs(trp).then(() => {
-      this.router.navigate([property._id, {isDark:this.dark}], { relativeTo: this.route})
+      this.router.navigate([property._id], { relativeTo: this.route })
     });
 
     // localStorage.setItem('trans_Stage$','1');
@@ -265,7 +198,7 @@ config = {
   }
 
   onView(){
-    let property = this.helper.properties[this.selectedRow];
+    let property = this.pp[this.selectedRow];
     // console.log(property);
     
     if(this.selectedRow==1){

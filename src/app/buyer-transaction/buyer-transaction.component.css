@@ -7,9 +7,6 @@
   }
 
 
-  .mat-row:hover{
-    background-color: rgb(143, 219, 194);
-}
 .staticLogo{
     background: url('/assets/icons/Buyerlogo2.jpg');
     background-repeat: no-repeat;
@@ -19,16 +16,6 @@
     right: 1vw;
     height: 15vh;
     width: 7vw;
-}
-
-.mat-toolbar span{
-    margin-left: 1vw;
-    cursor: pointer;
-  }
-
-.container button{
-    margin-left: 90%;
-    margin-top: -5%;
 }
 
   /* progress bar css code down below --> */
@@ -47,7 +34,7 @@
 
   .multistep .multistep-step .multistep-stepname {
       margin-bottom: 16px;
-      color: rgb(209, 209, 209);
+      color: #595959;
       font-size: 1vw;
       white-space: nowrap;
   }
@@ -148,70 +135,4 @@
   .multistep .multistep-step.next a.multistep-dot {
       pointer-events: all;
   }
-
-  #materialMenu{
-    display: none;
-  }
-
-  #buyerHead{
-        font-family: "OverpassMono-bold" !important;
-        font-style: "semi-bold" !important;
-  }
-
-  .container h2{
-    font-family: "OverpassMono-bold" !important;
-    font-style: "semi-bold" !important;
-  }
-  .container h3{
-    font-family: "OverpassMono-bold" !important;
-    font-style: "semi-bold" !important;
-  }
-  .escnot{
-    font-family: "OverpassMono-bold" !important;
-    font-style: "semi-bold" !important;
-  }
-  @media screen and (max-width:400px){
-      .progBar{
-          display: none;
-      }
-      .staticLogo{
-        display: none;
-      }
-      #buyerHead{
-        display: none;
-      }
-      #materialMenu{
-        display: inline;
-      }
-      #materialMenu span:hover{
-        cursor: pointer;
-        font-size: auto;
-      }
-      a:hover{
-        cursor: pointer;
-        font-size: 15px;
-      }
-      .container button{
-          margin-left: 0%;
-      }
-  }
   
-  .example-fill-remaining-space {
-    /* This fills the remaining space, by using flexbox. 
-       Every toolbar row uses a flexbox row layout. */
-    flex: 1 1 auto;
-  }
-  .list-group{
-    margin: auto;
-    width: 80%;
-}
-.list-group-item{
-  border: 3px solid #ddd;
-  border-radius: 10px;
-  background: none;
-  margin-bottom: 1vh;
-}
-.mat-raised-button{
-    font-family: "OverpassMono-bold" !important;
-    font-style: "semi-bold" !important;
-}

@@ -2,7 +2,7 @@ import { Router } from '@angular/router';
 import { BlockchainService } from '../blockchain.service';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import {FormControl, Validators} from '@angular/forms';
+
 
 declare var jquery:any;
 declare var $ :any;
@@ -12,31 +12,15 @@ declare var $ :any;
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-
-
 export class LoginComponent implements OnInit {
-
-  constructor(private titleService:Title,private _myService:BlockchainService,private router:Router){
-
-  }
 
   public username='';
   public password='';
   public errorFlag=false;
 
+  constructor(private titleService:Title,private _myService:BlockchainService,private router:Router){
 
-  // Material methods
-
-  un = new FormControl('', [Validators.required]);
-  pwd = new FormControl('', [Validators.required]);
-
-  getErrorMessage() {
-    return this.un.hasError('required') ? 'You must enter a value' :
-        this.pwd.hasError('required') ? 'You must enter a value' :
-            '';
   }
-
-  // Regular methods
   ngOnInit() {
     this.titleService.setTitle('Login');
     this.errorFlag=false;

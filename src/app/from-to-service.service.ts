@@ -8,8 +8,7 @@ import { Transactions, Property, TransactionPhase } from './model';
 @Injectable()
 export class FromToServiceService {
   // _Url='http://192.168.43.226:4000/';
-   _Url='http://localhost:4000/';
-  //_Url = 'http://192.168.43.220:4000/'
+  _Url='http://localhost:4000/';
   usr1='HDFC';
   usr2='ICICI';
   username='jovin_is_God';

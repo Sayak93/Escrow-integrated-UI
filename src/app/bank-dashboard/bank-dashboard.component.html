@@ -1,124 +1,111 @@
-<mat-toolbar id="buyerHead">
-    <span class="pull-left">
-      <img style="width:7vw;height:100%" src="/assets/icons/index.png">
-    </span>
-    <span>Welcome Banker</span>
-    <span routerLink="/escrow">Home</span>
-    <span routerLink="/escrow" style="margin-left: 2px" style="color: rgb(23, 199, 38)">My Account</span>
-    <span class="example-fill-remaining-space"></span>
-    <mat-slide-toggle [checked]="dark" (change)="dark=!dark;toggleTheme();" color="accent">Dark theme</mat-slide-toggle>
-    <span class="example-fill-remaining-space"></span>
-    <span>About</span>
-    <span routerLink="/login" style="margin-left: 2px" style="color: rgb(199, 64, 23) !important">Logout</span>
-    <span style="right: 0">
-      <img style="width:7vw;height: 100%;" src="/assets/icons/logo_colored.png">
-    </span>
-  </mat-toolbar>
+<nav class="navbar navbar-default">
+  <div class="container">
+      <a  class="navbar-left" style="padding-right: 10px"><img style="max-width:140px;max-width:100px;margin-top: 3px" src="/assets/icons/index.png"></a>
+    <a class="navbar-brand" style="color: rgb(19, 163, 151)">Welcome Bank</a>
+    <ul class="nav navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" style="color: rgb(19, 163, 151)">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" style="color: rgb(19, 163, 151)">About</a>
+      </li>
+    </ul>
+    <span  class="navbar-right" style="padding-right: 10px"><img style="max-width:140px;max-height:7 0px;margin-top: 2px" src="/assets/icons/logo_colored.png"></span>
+    <ul class="nav navbar-nav navbar-right">
+      <li>
+        <a style="color: rgb(19, 163, 151)">
+          <span class="glyphicon glyphicon-user" style="color: rgb(23, 199, 38)"></span> My Account</a>
+      </li>
+      <li>
+        <a href="http://localhost:4200/login" style="color: rgb(19, 163, 151)">
+          <span class="glyphicon glyphicon-log-out" style="color: rgb(199, 64, 23)"></span> Log out</a>
+      </li>
 
-  <mat-tab-group mat-stretch-tabs [selectedIndex]=selectedTab #tabGroup (selectedTabChange)="tabChanged($event)">
-      <mat-tab label="Properties Under Transaction">
-        <h2 style="text-align: center"><b>Current Transactions</b></h2>
-        
-        <button class="mat-elevation-z15" mat-raised-button color="accent" (click)=getAllTps() class="pull-right" style="margin-top: -2%;margin-right: 2%;">Refresh</button>
-        <p class="text-center">Select a row and click on Proceed to continue</p>
-        
-          <table mat-table [dataSource]="tsp" class="mat-elevation-z8">
-              <!-- Title Column -->
-              <ng-container matColumnDef="title">
-                <th mat-header-cell *matHeaderCellDef> Title </th>
-                <td mat-cell *matCellDef="let element"> {{element.property.title}} </td>
-              </ng-container>
-        
-              <!-- Escrow Name Column -->
-              <ng-container matColumnDef="escrow">
-                <th mat-header-cell *matHeaderCellDef> Escrow Name </th>
-                <td mat-cell *matCellDef="let element"> Escrow </td>
-              </ng-container>
-        
-              <!-- Seller Name Column -->
-              <ng-container matColumnDef="seller">
-                <th mat-header-cell *matHeaderCellDef> Seller Name </th>
-                <td mat-cell *matCellDef="let element"> Seller </td>
-              </ng-container>
-        
-              <!-- Bank Name Column -->
-              <ng-container matColumnDef="bank">
-                <th mat-header-cell *matHeaderCellDef> Buyer Name </th>
-                <td mat-cell *matCellDef="let element"> Buyer </td>
-              </ng-container>
-        
-              <!-- Title Amount Column -->
-              <ng-container matColumnDef="price">
-                <th mat-header-cell *matHeaderCellDef> Title Amount </th>
-                <td mat-cell *matCellDef="let element"> {{element.property.price |currency:'GBP':'symbol':'1.0-2'}} </td>
-              </ng-container>
-        
-              <!-- Transaction Status Column -->
-              <ng-container matColumnDef="tStatus">
-                <th mat-header-cell *matHeaderCellDef> Transaction Status </th>
-                <td mat-cell *matCellDef="let element"> {{getTransStatus(element.tp)}} </td>
-              </ng-container>
-        
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns; let i=index" [ngClass]="{'highlight': selectedTpRow == i}" (click)="onTpRowSelect(i)"></tr>
-            </table>
-          <div class='text-center'>
-            <button [disabled]='proceedDisable' class="mat-elevation-z15 btn" mat-raised-button color="primary" type="button" (click)="onProceed()">Proceed</button>
-          </div>
-      </mat-tab>
-
-      <mat-tab label="Approval Requests/Notifications" [disabled]="isDisabled">
-        <h2 style="text-align: center"><b>Notifications</b></h2>
-        <button class="mat-elevation-z15 refresh" mat-raised-button color="accent" type="button" (click)="this.helper.checkStatus()">Refresh</button>
-        <!-- <button (click)='this.helper.checkStatus()' class="btn btn-danger btn-lg" style="margin-left: 90%;margin-top: -5%">Refresh</button> -->
-        <ul class="list-group" style="font-size: 19px">
-          <li *ngIf='check4not()' class="list-group-item">Title Received from Escrow, Notify Buyer!!
-            <!-- <button *ngIf='!check4Approval()' (click)='approve4()' class="btn btn-primary pull-right">Approve</button> -->
-            <button *ngIf='!check4Approval()' style="margin: auto" class="mat-elevation-z15 send pull-right" mat-raised-button color="primary" type="button" (click)="approve4()">Approve</button>
-            <span *ngIf='check4Approval()'  class="pull-right succ">Approved
-              <span class="glyphicon glyphicon-ok"></span>
-            </span>
-            <span class="pull-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <!-- <button  class="btn btn-success pull-right" (click)="view('title')">View Title</button> -->
-            <button class="send pull-right" style="margin: auto;padding: 0 2.5%;" mat-raised-button color="accent" type="button" (click)="view('title')">View Title</button>
-
-          </li>
-          <li *ngIf='check3not()' class="list-group-item">Transfer Remaining Fund to Escrow
-            <!-- <button *ngIf='!check3Approval()' (click)="approve3('Lender','Escrow')" class="btn btn-primary pull-right">Approve</button> -->
-            <button *ngIf='!check3Approval()' style="margin: auto" class="mat-elevation-z15 send pull-right" mat-raised-button color="primary" type="button" (click)="approve3('Lender','Escrow')">Approve</button>
-            <span *ngIf='check3Approval()'  class="pull-right succ">Approved
-              <span class="glyphicon glyphicon-ok"></span>
-            </span>
-          </li>
-          <li *ngIf='check2not()'  class="list-group-item">Escrow Recieved 10% amount and Title, Transfer Mortgage to buyer
-            <!-- <button *ngIf='!check2Approval()' (click)='approve2()' class="btn btn-primary pull-right">Approve</button> -->
-            <button [disabled]="mUp" *ngIf='!check2Approval()' style="margin: auto; margin-top: -3px;" class="mat-elevation-z15 send pull-right" mat-raised-button color="primary" type="button" (click)="approve2()">Approve</button>
-            <span *ngIf='check2Approval()'  class="pull-right succ">Approved
-              <span class="glyphicon glyphicon-ok"></span>
-            </span>
-            <input type="file" *ngIf=!check2Approval() style="font-size: 14px" class="pull-right" id="file" (change)="mortgageUp($event.target.files)">
-          
-          </li>
-          <li *ngIf='check1not()' class="list-group-item">Loan application received.
-            <!-- <button *ngIf='!check1Approval()' (click)='approve1()' class="btn btn-primary pull-right">Approve</button> -->
-            <button *ngIf='!check1Approval()' class="mat-elevation-z15 send pull-right" mat-raised-button color="primary" type="button" (click)="approve1()">Approve</button>
-            <span *ngIf='check1Approval()' style="margin: auto" class="pull-right succ">Approved
-              <span class="glyphicon glyphicon-ok"></span>
-            </span>
-            <span class="pull-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <!-- <button class="btn btn-success pull-right" (click)="view('titleRecord')">View Application</button> -->
-            <button style="margin: auto" class="mat-elevation-z15 send pull-right" mat-raised-button color="accent" type="button" (click)="view('titleRecord')">View Application</button>
-          </li>
+    </ul>
+    
+  </div>
   
-        </ul>
-      </mat-tab>
+</nav>
 
-      <mat-tab label="Transaction Details">
-        <app-trans-table *ngIf="this.helper.token!=''" [helper]='helper'></app-trans-table>
-      </mat-tab>
-  </mat-tab-group>
+<tabset  #staticTabs [justified]="true">
+  <tab heading="Properties Under Trasaction">
+    <div class="container">
+          <h2> <b>Current Transactions</b> </h2>
+          <button (click)='getAllTps()' class="btn btn-danger btn-lg pull-right" style="margin-top: -3%;">Refresh</button>
+          <p>Select a transaction and click on Proceed to continue.</p>
+          <table class="table table-bordered" id='myTable'>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Buyer Name</th>
+                <th>Seller Name</th>  
+                <th>Escrow Name</th>
+                <th>Title Amount</th>
+                <th>Transaction Status</th>
+                
+        
+              </tr>
+            </thead>
+            <tbody>
+              <tr (click)='onTpRowSelect(i)' *ngFor='let tp of this.helper.tps;index as i' [class.bg-primary]="i==selectedTpRow">
+                <td>{{tp.property.title}}</td>
+                <td>Buyer</td>
+                <td>Seller</td>
+                <td>Escrow</td>
+                <td>{{tp.property.price | currency:'GBP':'symbol':'1.0-2'}}</td>
+                <td>{{getTransStatus(tp.tp)}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class='text-center'>
+            <button [disabled]='proceedDisable' (click)="onProceed()" class='btn btn-primary'>Proceed</button>
+          </div>
+        </div>
+  </tab>
+  <tab heading="Approval Requests/Notifications" (select)="addProg()">
+    <div class="container">
+      <h2><b>Notifications</b></h2>
+      <button (click)='this.helper.checkStatus()' class="btn btn-danger btn-lg" style="margin-left: 90%;margin-top: -5%">Refresh</button>
+      <ul class="list-group" style="font-size: 19px">
+        <li *ngIf='check4not()' class="list-group-item">Title Recieved from Escrow, Notify Buyer!!
+          <button *ngIf='!check4Approval()' (click)='approve4()' class="btn btn-primary pull-right">Approve</button>
+          <span *ngIf='check4Approval()' class="pull-right text-success">Approved
+            <span class="glyphicon glyphicon-ok"></span>
+          </span>
+          <span class="pull-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <button  class="btn btn-success pull-right" (click)="view('title')">View Title</button>
+        </li>
+        <li *ngIf='check3not()' class="list-group-item">Transfer Remaining Fund to Escrow
+          <button *ngIf='!check3Approval()' (click)="approve3('Lender','Escrow')" class="btn btn-primary pull-right">Approve</button>
+          <span *ngIf='check3Approval()' class="pull-right text-success">Approved
+            <span class="glyphicon glyphicon-ok"></span>
+          </span>
+        </li>
+        <li *ngIf='check2not()' style="padding-bottom: 30px" class="list-group-item">Escrow Recieved 10% amount and Title, Transfer Mortgage to buyer
+          <button *ngIf='!check2Approval()' (click)='approve2()' class="btn btn-primary pull-right">Approve</button>
+          <span *ngIf='check2Approval()' class="pull-right text-success">Approved
+            <span class="glyphicon glyphicon-ok"></span>
+          </span>
+          <input type="file" [disabled]=check2Approval() style="font-size: 14px" class="pull-right" id="file" (change)="mortgageUp($event.target.files)">
+        
+        </li>
+        <li *ngIf='check1not()' class="list-group-item">Loan application recieved.
+          <button *ngIf='!check1Approval()' (click)='approve1()' class="btn btn-primary pull-right">Approve</button>
+          <span *ngIf='check1Approval()' class="pull-right text-success">Approved
+            <span class="glyphicon glyphicon-ok"></span>
+          </span>
+          <span class="pull-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <button class="btn btn-success pull-right" (click)="view('titleRecord')">View Application</button>
+        </li>
 
-
+      </ul>
+    </div>
+  </tab>
+  
+  <tab heading="Transaction Details" (select)="remProg()">
+      <app-trans-table [helper]='helper'></app-trans-table>
+  </tab>
+</tabset>
 <ng-template #no_data_templ>
   <div class="container">
     <button (click)='getAllTids()' class="btn btn-danger btn-lg" style="margin-left: 90%;margin-bottom: -5%">Refresh</button>

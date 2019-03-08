@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, TemplateRef, HostListener, ViewChild, ChangeDetectorRef, Directive, Renderer2, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, TemplateRef, HostListener } from '@angular/core';
 import { Helper } from '../helper';
 import { Transactions } from '../model';
 import { FromToServiceService } from '../from-to-service.service';
@@ -7,9 +7,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { SocketService } from '../socket.service';
-import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import { ModalDirective } from 'ngx-bootstrap/modal';
-
 
 @Component({
   selector: 'app-trans-table',
@@ -39,35 +36,17 @@ export class TransTableComponent implements OnInit {
   public tVal
   public data
   public tid
-
   modalRef: BsModalRef;
   config = {
-    animated: true,
-    // backdrop: false,
-    class: 'modal-lg' 
+    animated: true
   };
 
   constructor(private socketService: SocketService,private modalService: BsModalService, private _fromToService: FromToServiceService, private _myService: BlockchainService, private router: Router, private route: ActivatedRoute) {
   }
 
-  displayedColumns: string[] = [ 'title', 'ttype', 'tdesc', 'doneby', 'time', 'id' ];
-  dataSource: MatTableDataSource<Transactions>;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  @HostListener('document:click', ['$event']) clickedOutside($event){
-    if($event.target.nodeName!='TD'){
-      this.selectedTransRow=99;
-      this.disableDetails=true;
-    }
-  }
-  openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template,this.config);
-  }
-// ***********init************
- ngOnInit() {
+  ngOnInit() {
     this.initIoConnection();
-    this.getAllTids();
-    this.getAllTids();
+    
   }
   public initIoConnection(): void {
     this.socketService.initSocket();
@@ -75,17 +54,16 @@ export class TransTableComponent implements OnInit {
     .subscribe((data) => {
     //console.log("******FROM TRANS TABLE ",data);
     this.transactions=data;
-    this.dataSource.data=data;
-
+    
     });
 
   }
 
-// @HostListener('window:focus', ['$event'])
-// onFocus(event: any): void {
-// this.getAllTids();
+@HostListener('window:focus', ['$event'])
+onFocus(event: any): void {
+this.getAllTids();
 
-// }
+}
 
 // @HostListener('window:blur', ['$event'])
 // onBlur(event: any): void {
@@ -98,8 +76,6 @@ export class TransTableComponent implements OnInit {
   async getAllTids(){
     await this._fromToService.getAllTid(this.helper.getToken()).subscribe(data=>{
       this.transactions=data;
-      this.dataSource = new MatTableDataSource(this.transactions);
-      this.dataSource.paginator = this.paginator;
     })
     
   }
@@ -148,8 +124,6 @@ export class TransTableComponent implements OnInit {
         }
         this.co = arr[0].key
         this.coVal = arr[0].value
-        console.log(arr);
-        
         this.t = arr[2].key;
         this.tVal = arr[2].value
 

@@ -23,11 +23,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "src/custom-theme.scss",
-              "src/light-custom-theme.scss",
-              "src/assets/css/fonts/customfonts.scss"
-              ],
+              "src/styles.css"
+            ],
             "scripts": []
           },
           "configurations": {

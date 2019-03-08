@@ -1,8 +1,8 @@
 import { CurrencyPipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, ViewChild, HostListener, HostBinding } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
-import { OverlayContainer} from '@angular/cdk/overlay';
+
 import { Helper } from '../helper';
 import { BlockchainService } from '../blockchain.service';
 import { FromToServiceService } from './../from-to-service.service';
@@ -10,8 +10,6 @@ import { Transactions, TransactionPhase } from '../model';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { Title } from '@angular/platform-browser';
 import { SocketService } from '../socket.service';
-import { MatTabChangeEvent } from '@angular/material';
-
 @Component({
   selector: 'app-bank-dashboard',
   templateUrl: './bank-dashboard.component.html',
@@ -26,64 +24,13 @@ export class BankDashboardComponent implements OnInit {
   public selectedTpRow:number;
   public prog = false;
   public proceedDisable=true;
-  public dark= false;
-  public tsp;
-  public isDisabled=true;
-  public selectedTab;
-  public mUp=true;
   
-  constructor(private overlay: OverlayContainer,private socketService: SocketService,private titleService:Title,private _fromToService: FromToServiceService, private _myService: BlockchainService, private router: Router, private route: ActivatedRoute) {
+  constructor(private socketService: SocketService,private titleService:Title,private _fromToService: FromToServiceService, private _myService: BlockchainService, private router: Router, private route: ActivatedRoute) {
     this.helper = new Helper(socketService,_fromToService, _myService)
   }
-  
-  @HostListener('document:click', ['$event']) clickedOutside($event){
-    if($event.target.nodeName!='TD'){
-      this.selectedTpRow=99;
-      this.proceedDisable=true;
-    }
-  }
-  tabChanged = (tabChangeEvent: MatTabChangeEvent): void => {
-    if(tabChangeEvent.tab.textLabel=="Approval Requests/Notifications"){
-      this.addProg();
-    }
-    else{
-      this.remProg();
-    }
-  }
-
-  displayedColumns: string[] = [ 'title', 'escrow', 'seller', 'bank', 'price', 'tStatus' ];
-  @HostBinding('class') componentCssClass;
-  toggleTheme(): void {
-    console.log('toggle called');
-    console.log('dark:', this.dark);
-    if (this.overlay.getContainerElement().classList.contains("custom-theme")) {
-      this.overlay.getContainerElement().classList.remove("custom-theme");
-      this.overlay.getContainerElement().classList.add("light-custom-theme");
-    } else if (this.overlay.getContainerElement().classList.contains("light-custom-theme")) {
-      this.overlay.getContainerElement().classList.remove("light-custom-theme");
-      this.overlay.getContainerElement().classList.add("custom-theme");
-    } else {
-      this.overlay.getContainerElement().classList.add("light-custom-theme");
-    }
-    if (document.body.classList.contains("custom-theme")) {
-      document.body.classList.remove("custom-theme");
-      document.body.classList.add("light-custom-theme");
-    } else if (document.body.classList.contains("light-custom-theme")) {
-      document.body.classList.remove("light-custom-theme");
-      document.body.classList.add("custom-theme");
-    } else {
-      document.body.classList.add("light-custom-theme");
-    }
-  }
-
-  async toggle(){
-    await this.toggleTheme()
-    this.toggleTheme()
-  }
-
   ngOnInit() {
-    this.toggleTheme();
     this.titleService.setTitle('Bank');
+    this.staticTabs.tabs[1].disabled = true;
     this._fromToService.enroll().subscribe(data => {
       this.helper.setToken(data.token);
       this.getAllTps().then(()=>{
@@ -118,7 +65,6 @@ export class BankDashboardComponent implements OnInit {
 async getAllTps(){
   await this._fromToService.getAllTps(this.helper.getToken()).subscribe(data=>{
     this.helper.tps=data;
-    this.tsp=data;
   })
 }
 
@@ -129,8 +75,8 @@ onTpRowSelect(i: number) {
 onProceed(){
   this.helper.setProperty(this.helper.tps[this.selectedTpRow].property);
   this.helper.checkStatus();
-  this.isDisabled=false;
-  this.selectedTab=1;
+  this.staticTabs.tabs[1].disabled = false;
+  this.staticTabs.tabs[1].active = true;
   this.prog=true;
 }
 getTransStatus(i:number){
@@ -255,7 +201,6 @@ remProg(){
   //**************UPLOADING MORTGAGE************************* */
   async mortgageUp(files: FileList) {
     this.helper.mortgageUp(files);
-    this.mUp=false;
   }
 
 }

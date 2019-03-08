@@ -1,53 +1,12 @@
+.modal-dialog {
+    width: 100vw;
+    overflow-x: hidden
+}
+
+    .modal-dialog .modal-lg {
+        width: 90vw;
+        overflow-x: hidden
+    }
 th{
     text-align: center
 }
-.highlight{
-    background-color: rgb(8, 156, 107);
-  }
-
-  .table > tbody > tr > th{
-      padding: 18px;
-  }
-
-  .table > tbody > tr > td{
-    padding: 18px;
-}
-
-table{
-    width: 100%;
-    color: azure;
-    height: 30vh;
-}
-
-.container{
-    width: 100%
-}
-.mat-header-cell{
-    text-align: center;
-    font-size: 0.9vw;
-    font-weight: bold;
-  }
-  .mat-cell{
-    text-align: center;
-    font-size: 0.8vw;
-  }
-*{
-	font-family: "OverpassMono-bold" !important;
-	font-style: "semi-bold" !important;
-  }
-.mat-row{
-    cursor: pointer
-}
-.mat-row:hover{
-    background-color: rgb(143, 219, 194);
-}
-
-.mat-tooltip {
-margin-top: -5vh;
-}
-.mat-raised-button{
-    margin-right: 2vw;
-    font-family: "OverpassMono-bold" !important;
-    font-style: "semi-bold" !important;
-}
-

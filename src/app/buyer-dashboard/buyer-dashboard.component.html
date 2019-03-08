@@ -1,12 +1,122 @@
-<!-- Modal For Property-Details -->
+<div class="">
+<nav id = "buyerHead" class="navbar navbar-default">
+  <div class="container text-primary">
+      <span  class="navbar-left" style="padding-right: 10px"><img style="max-width:140px;max-width:100px;margin-top: 3px" src="/assets/icons/index.png"></span>
+    <a class="navbar-brand" style="color: rgb(23, 93, 199)">Welcome Buyer</a>
+    <ul class="nav navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" style="color: rgb(23, 93, 199)">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" style="color: rgb(23, 93, 199)">About</a>
+      </li>
+    </ul>
+    <span  class="navbar-right" style="padding-right: 10px"><img style="width:10vw;height:6vh;margin-top: 2px;margin-right:1vw;" src="/assets/icons/logo_colored.png"></span>
+    <ul class="nav navbar-nav navbar-right">
+      <li>
+        <a style="color: rgb(23, 93, 199)">
+          <span class="glyphicon glyphicon-user" style="color: rgb(23, 199, 38)"></span> My Account</a>
+      </li>
+      <li><a href="http://localhost:4200/login"  style="color: rgb(23, 93, 199)"><span class="glyphicon glyphicon-log-out"  style="color: rgb(199, 64, 23)" ></span> Log out</a></li>
+
+    </ul>
+  </div>
+</nav>
+<tabset [justified]="true">
+    <tab heading="Listed Properties" (select)="addProgBar()">
+<div class="container" style="width: 80%" id="buyerBody">
+  <h2 class="text-center"><b>On-Sale Properties</b></h2>
+  <p class="text-center">Select a Property to Buy. Click on Details to view property description.</p>
+  <table class="table table-bordered " id='myTable'>
+    <thead>
+      <tr>
+        <th class="propertyTable">Sl. No.</th>
+        <th class="propertyTable">Property</th>
+        <th class="propertyTable">Location</th>
+        <th class="propertyTable">Price</th>
+        <th class="propertyTable">Contact Info</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr (click)='onRowSelect(i)' *ngFor='let property of pp;index as i' [class.active]="i==selectedRow">
+        <td style="font-weight: bold">{{i+1}}</td>
+        <td style="font-weight: bold">{{property.title}}</td>
+        <td style="font-weight: bold">{{property.location}}</td>
+        <td style="font-weight: bold">{{property.price | currency:'GBP':'symbol':'1.0-2'}}</td>
+        <td style="font-weight: bold">+44-{{property.contact}}</td>
+    </tbody>
+  </table>
+  <div class='text-center'>
+    <button [disabled]='disableFlag' id='buyButton' (click)=onBuy() class='btn btn-danger'>Buy Property</button>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <button [disabled]='disableFlag' type="button" class="btn btn-primary" (click)="lgModal.show();onView()">Property Details</button>
+  </div>
+</div>
+
+</tab>
+<tab heading="Current Transactions" (select)="addProgBar()">
+      <div class="container">
+          <h2><b>Current Transactions</b></h2>
+          <button (click)='getAllTps()' class="btn btn-danger btn-lg pull-right" style="margin-top: -3%;">Refresh</button>
+          <p>Select a record to continue the transaction</p>
+          <table class="table table-bordered" id='myTable'>
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Escrow Name</th>
+                <th>Seller Name</th>  
+                <th>Bank Name</th>
+                <th>Title Amount</th>
+                <th>Transaction Status</th>
+                
+        
+              </tr>
+            </thead>
+            <tbody>
+              <tr (click)='onTpRowSelect(i)' *ngFor='let tp of this.helper.tps;index as i' [class.bg-primary]="i==selectedTpRow">
+                <td>{{tp.property.title}}</td>
+                <td>Escrow</td>
+                <td>Seller</td>
+                <td>Bank</td>
+                <td>{{tp.property.price | currency:'GBP':'symbol':'1.0-2'}}</td>
+                <td>{{getTransStatus(tp.tp)}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class='text-center'>
+              <button [disabled]='disableContinue' id='continueButton' (click)=onContinue() class='btn btn-danger'>Proceed</button>
+            </div>
+        </div>        
+</tab>
+
+<tab heading="Transaction Details"  (select)="remvProgBar()">
+    <app-trans-table [helper]='helper'></app-trans-table>     
+</tab>
+
+</tabset>
+
+<ng-template #no_data_templ>
+  <div class="container">
+    <button (click)='getAllTids()' class="btn btn-danger btn-lg" style="margin-left: 90%;margin-bottom: -5%">Refresh</button>
+      <h2>No data found...</h2>
+  </div>
+  
+    
+</ng-template>
+
+</div>
+
+<!-- Modal For Propert-Details -->
+
+<!-- Modal For Transaction-Details -->
 <div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1"
      role="dialog" aria-labelledby="dialog-sizes-name1">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header" style="text-align: center;color: black">
+      <div class="modal-header" style="text-align: center">
         <h2 id="dialog-sizes-name1" class="modal-title">Property Details</h2>
       </div>
-      <div class="modal-body" style="text-align: center;color: black">
+      <div class="modal-body">
           <div style="text-align: center">
               <span><h3><b>{{pTitle}}</b></h3></span>
               <span><h4><b>{{pAddr}}</b></h4></span>
@@ -46,7 +156,7 @@
           <h5>{{pDesc}}</h5>
         </div>
     </div>
-    <div class="modal-footer" style="color: black">
+    <div class="modal-footer">
       <button type="button" class="btn btn-danger" aria-label="Close" (click)="lgModal.hide()">
         <span aria-hidden="true">Close</span>
       </button>
@@ -54,163 +164,6 @@
     </div>
   </div>
 </div>
-
-  <mat-toolbar id = "buyerHead">
-    <span class="pull-left"><img style="width:7vw;height:100%" src="/assets/icons/index.png"></span>
-  <span>Welcome Buyer</span>
-  <span>Home</span>
-  <span style="margin-left: 2px" style="color: rgb(23, 199, 38)">My Account</span>
-<span class="example-fill-remaining-space"></span>
-<mat-slide-toggle [checked]="dark" (change)="dark=!dark;toggleTheme();" color="accent">Dark theme</mat-slide-toggle>
-<span class="example-fill-remaining-space"></span>
-  <span>About</span>
-  <span routerLink="/login"style="margin-left: 2px" style="color: rgb(199, 64, 23) !important">Logout</span>
-  <span style="right: 0"><img style="width:7vw;height: 100%;" src="/assets/icons/logo_colored.png"></span>
-</mat-toolbar>
-
-<nav class="navbar navbar-default" id="materialMenu">
-    <button [matMenuTriggerFor]="menu">
-        <span class="glyphicon">&#xe012;</span>
-      </button>
-    <mat-menu #menu="matMenu">
-        <button mat-menu-item>
-            <span class="glyphicon">&#xe021;</span>
-          <span>Home</span>
-        </button>
-        <button mat-menu-item>
-          <span class="glyphicon">&#xe085;</span>
-          <span>About</span>
-        </button>
-        <button mat-menu-item>
-          <span class="glyphicon" style="color: rgb(23, 199, 38)">&#xe008;</span>
-          <span>My Account</span>
-        </button>
-        <a mat-menu-item href="http://localhost:4200/login">
-            <span class="glyphicon" style="color: rgb(199, 64, 23)">&#xe163;</span>
-            <span>Logout</span>
-        </a>
-
-      </mat-menu>
-
-    <span  style="color: rgb(23, 93, 199);margin-right: 5px;margin-left: 3px"> Welcome Buyer</span>
-    <span  class="pull-right" style="padding-right: 10px;height: 100%;margin-left: 10px"><img style="max-width:140px;max-height: 30px" src="/assets/icons/index.png"></span>
-    <span  class="pull-right" style="padding-right: 10px;height: 100%;margin-left: 10px"><img style="max-width:140px;max-height: 30px;margin-top: 3px;margin-right: 5px;" src="/assets/icons/logo_colored.png"></span>
-    
-</nav>
-
-<mat-tab-group mat-stretch-tabs>
-    <mat-tab label="Listed Properties" (select)="addProgBar()">
-
-        <h2 class="text-center"><b>On-Sale Properties</b></h2>
-        <p class="text-center">Select a Property to Buy. Click on Details to view property description.</p>
-      
-        <table mat-table [dataSource]="this.helper.properties" class="mat-elevation-z8">
-      
-          <!-- Sl. No. Column -->
-          <ng-container matColumnDef="index">
-            <th mat-header-cell *matHeaderCellDef> Sl. No. </th>
-            <td mat-cell *matCellDef="let index = index"> {{index+1}} </td>
-          </ng-container>
-        
-          <!-- Title Column -->
-          <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef> Title </th>
-            <td mat-cell *matCellDef="let element"> {{element.title}} </td>
-          </ng-container>
-        
-          <!-- Location Column -->
-          <ng-container matColumnDef="location">
-            <th mat-header-cell *matHeaderCellDef> Location </th>
-            <td mat-cell *matCellDef="let element"> {{element.location}} </td>
-          </ng-container>
-        
-          <!-- Price Column -->
-          <ng-container matColumnDef="price">
-            <th mat-header-cell *matHeaderCellDef> Price </th>
-            <td mat-cell *matCellDef="let element"> {{element.price | currency:'GBP'}} </td>
-          </ng-container>
-      
-          <!-- Contact Info Column -->
-          <ng-container matColumnDef="contact">
-             <th mat-header-cell *matHeaderCellDef> Contact Info </th>
-              <td mat-cell *matCellDef="let element"> +44 {{element.contact}} </td>
-          </ng-container>
-        
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row id="row" *matRowDef="let row; columns: displayedColumns; let i=index" [ngClass]="{'highlight': selectedRow == i}" (click)="onRowSelect(i)"></tr>
-        </table>
-
-        <div class='text-center'>
-            <div class='button-row'>
-                <button class="matbtn mat-elevation-z15" mat-raised-button color="warn" [disabled]='disableFlag' id='buyButton' (click)=onBuy()>Buy Property</button>
-                <button class="mat-elevation-z15" mat-raised-button color="primary" [disabled]='disableFlag' type="button" (click)="lgModal.show();onView()">Property Details</button>
-              </div>
-        </div>
-
-
-    </mat-tab>
-    <mat-tab label="Current Transactions" (select)="addProgBar()">
-      
-        <h2 style="text-align: center"><b>Properties Under Transaction</b></h2>
-        
-        <button class="mat-elevation-z15" mat-raised-button color="accent" (click)=getAllTps() class="pull-right" style="margin-top: -2%;margin-right: 2%;">Refresh</button>
-        <p class="text-center">Select a row and click on Proceed to continue</p>
-        
-
-        <table mat-table [dataSource]="tsp" class="mat-elevation-z8">
-
-            <!-- Title Column -->
-            <ng-container matColumnDef="title">
-              <th mat-header-cell *matHeaderCellDef> Title </th>
-              <td mat-cell *matCellDef="let element"> {{element.property.title}} </td>
-            </ng-container>
-          
-            <!-- Escrow Name Column -->
-            <ng-container matColumnDef="escrow">
-              <th mat-header-cell *matHeaderCellDef> Escrow Name </th>
-              <td mat-cell *matCellDef="let element"> Escrow </td>
-            </ng-container>
-          
-            <!-- Seller Name Column -->
-            <ng-container matColumnDef="seller">
-              <th mat-header-cell *matHeaderCellDef> Seller Name </th>
-              <td mat-cell *matCellDef="let element"> Seller </td>
-            </ng-container>
-          
-            <!-- Bank Name Column -->
-            <ng-container matColumnDef="bank">
-              <th mat-header-cell *matHeaderCellDef> Bank Name </th>
-              <td mat-cell *matCellDef="let element"> Bank </td>
-            </ng-container>
-        
-            <!-- Title Amount Column -->
-            <ng-container matColumnDef="price">
-               <th mat-header-cell *matHeaderCellDef> Title Amount </th>
-                <td mat-cell *matCellDef="let element"> {{element.property.price | currency:'GBP'}} </td>
-            </ng-container>
-
-            <!-- Transaction Status Column -->
-            <ng-container matColumnDef="tStatus">
-               <th mat-header-cell *matHeaderCellDef> Transaction Status </th>
-                <td mat-cell *matCellDef="let element"> {{getTransStatus(element.tp)}} </td>
-            </ng-container>
-          
-            <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns2; let i=index" [ngClass]="{'highlight': selectedTpRow == i}" (click)="onTpRowSelect(i)"></tr>
-          </table>
-
-        <div class='text-center'>
-            <button class="mat-elevation-z15 btn" mat-raised-button color="primary" [disabled]='disableContinue' id='continueButton' (click)=onContinue() >Proceed</button>
-        </div>
-
-    </mat-tab>
-    <mat-tab label="Transaction Details"  (select)="remvProgBar()">
-        <app-trans-table *ngIf="this.helper.token!=''" [helper]='helper'>
-        </app-trans-table> 
-    </mat-tab>
-  </mat-tab-group>
-
-
 
 <!-- logo -->
 
